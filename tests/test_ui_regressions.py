@@ -32,5 +32,8 @@ def test_workshop_defaults_to_available_domains_only():
     assert 'showTakenBest:false' in js
     assert 'showTakenExtensions:false' in js
     assert 'Pokaż zajęte' in js
-    assert 'najpierw sens, potem wolne .com' in js
+    assert 'mocne znaczenie → wolne .com' in js
+    assert 'RODZINY KONSTRUKCJI' in js
+    assert 'whole-meaning' in js
+    assert 'shortlist_minimum' in js
     assert "i+=20" in js
