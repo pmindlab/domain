@@ -9,8 +9,9 @@ def test_health():
     data = r.json()
     assert data['ok'] is True
     assert data['app'] == 'Mianem'
-    assert data['version'] == '1.5.0'
+    assert data['version'] == '1.6.0'
     assert data['workshop'] is True
+    assert data['semantic_workshop'] is True
     assert data['niche_count'] >= 60
 
 
@@ -24,12 +25,14 @@ def test_languages():
 
 def test_workshop_lark():
     client = TestClient(app)
-    r = client.post('/api/workshop', json={'root': 'lark', 'niche': 'birds', 'limit': 8})
+    r = client.post('/api/workshop', json={'root': 'lark', 'niche': 'birds', 'context': 'creative', 'limit': 8})
     assert r.status_code == 200
     data = r.json()
     assert data['root']['word'] == 'lark'
     assert 'skowronek' in data['root']['pl']
     assert data['before']
     assert data['after']
+    assert data['best']
     assert data['before'][0]['word'] == 'dawn'
     assert data['after'][0]['word'] == 'wing'
+    assert {'the', 'one'} <= {x['word'] for x in data['extensions']}
