@@ -1,27 +1,34 @@
 # Current Task
 
-TASK_ID: mianem-v1-7-1-workshop-depth-single-scroll-2026-09-12
+TASK_ID: mianem-v1-7-2-selected-direction-switch-2026-09-12
 
-Status: implementation complete on fix branch; pending CI/review/merge.
+Status: implementation on fix branch; pending CI/review/Human Owner QA.
 
 ## Trigger
-Human Owner visual QA of Mianem v1.7 found two concrete regressions:
-- `Lark` in the `software` context still collapsed to one strong free result after availability filtering (`17` strong candidates were taken and only `Clear Lark` survived), despite the intended 6–8 shortlist target;
-- opening the Workshop showed two vertical scroll surfaces: the Workshop content scroll plus the still-scrollable page behind the modal.
+Human Owner QA of Mianem v1.7.1 confirmed that:
+- the deeper Workshop pool now reaches the intended 6–8 strong available `.com` directions for `Lark` / `software` after a clean backend restart;
+- the Workshop now has one visible vertical scroll surface;
+- the selected-construction panel correctly shows whole-name EN/PL meaning, recommendation tier, semantic class and tone.
+
+The remaining interaction gap is direction control after selecting a member. Example: after choosing `Lark Echo`, the visible `przed rdzeniem` / `po rdzeniu` buttons still belong only to the separate custom-member field, so the user cannot clearly switch the selected member between `Echo Lark` and `Lark Echo` from the selected-construction panel.
 
 ## Fix
-- Added a second, still-curated software/product semantic pool with concrete whole-name EN/PL meanings and recommendation scores determined before `.com` availability.
-- Added strong/good directions such as Agent, Query, Logic, Sync, Code, Data, Bridge, Beacon, Scope, Stack, Relay, Mesh, Grid, Stream, Layer, Engine, Pilot, Lens, Trace, Route, Scan and further technical/product directions.
-- The added pool is automatically included in the existing live `.com` availability pass; taken domains remain hidden by default and cannot promote weaker names.
-- Every added direction preserves the v1.7 whole-name meaning contract: EN, PL, tone, semantic class and recommendation tier.
-- Added a v1.7.1 modal patch: the dialog itself no longer scrolls, the Workshop shell owns the single internal scrollbar, and background document scrolling is locked while the modal is open.
-- Added regression tests and CI syntax coverage for the v1.7.1 frontend patch.
+- Add an explicit `UKŁAD NAZWY` control inside the selected-construction panel.
+- For semantic/custom members, expose both `before` and `after` arrangements and re-run the existing analysis/live check when the user changes arrangement.
+- Each arrangement is evaluated independently; reversing a member does not inherit the original recommendation and may receive a weaker/abstract warning.
+- Preserve fixed grammar for curated construction families such as `By Lark`, `With Lark`, `Get Lark`, possessives and canonical descriptors: do not automatically create reversed nonsense such as `Lark By`.
+- Keep the custom-member `przed rdzeniem` / `po rdzeniu` controls for entering a new manual member; the new switch applies specifically to the currently selected construction.
+- Add PMindLab-token styling, regression coverage and JavaScript syntax coverage.
 
 ## QA required before merge
 - `pytest -q`
-- JavaScript syntax checks including `app/static/workshop-v171.js`
+- JavaScript syntax checks including `app/static/workshop-v172.js`
 - full PR CI
-- local Human Owner check with `Lark` / `software`: shortlist depth and exactly one visible Workshop scroll surface
+- Human Owner local check:
+  - select a semantic member such as `Light` / `Echo` and confirm the selected-construction panel lets the user switch both arrangements;
+  - confirm the meaning/recommendation is recalculated after switching;
+  - select a fixed grammatical construction such as `By Lark` and confirm the UI explains the fixed natural order instead of offering `Lark By`;
+  - confirm the v1.7.1 6–8 shortlist and single-scroll fixes remain intact.
 
 ## Product invariant
-Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available. Negative constructions are rejected before availability checks. Recommendation quality remains independent from `.com` availability; deeper search expands only with curated, meaningful constructions.
+Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available. Recommendation quality remains independent from `.com` availability. Direction switching is a user-controlled linguistic evaluation, not an instruction to recommend both orders equally.
