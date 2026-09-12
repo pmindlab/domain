@@ -1,0 +1,20 @@
+/* Mianem v1.7.1 — Workshop modal owns one scroll surface only. */
+.workshop-dialog{
+  overflow:hidden;
+  box-sizing:border-box;
+}
+.workshop-shell{
+  max-height:calc(100dvh - 24px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  box-sizing:border-box;
+}
+html.workshop-modal-open,
+html.workshop-modal-open body{
+  overflow:hidden!important;
+}
+@media(max-width:820px){
+  .workshop-dialog{max-height:calc(100dvh - 12px)}
+  .workshop-shell{max-height:calc(100dvh - 12px)}
+}
