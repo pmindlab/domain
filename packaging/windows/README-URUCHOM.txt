@@ -3,11 +3,10 @@ MIANEM — WINDOWS PORTABLE
 Uruchomienie
 ============
 
-1. Rozpakuj CAŁY pobrany ZIP do zwykłego folderu, np. Pobrane\Mianem.
-2. Nie przenoś samego Mianem.exe — folder `_internal` musi pozostać obok niego.
-3. Kliknij dwukrotnie Mianem.exe.
-4. Pojawi się małe okno Mianem, a aplikacja sama otworzy się w domyślnej przeglądarce.
-5. Po zakończeniu kliknij „Zakończ” w małym oknie Mianem.
+1. Rozpakuj pobrany ZIP do zwykłego folderu, np. Pobrane\Mianem.
+2. Kliknij dwukrotnie Mianem.exe.
+3. Pojawi się małe okno Mianem, a aplikacja sama otworzy się w domyślnej przeglądarce.
+4. Po zakończeniu kliknij „Zakończ” w małym oknie Mianem.
 
 Nie trzeba instalować Pythona, FastAPI ani żadnych dodatkowych bibliotek.
 Nie są wymagane uprawnienia administratora.
@@ -41,6 +40,13 @@ Windows SmartScreen
 ===================
 
 Ten build nie jest podpisany komercyjnym certyfikatem Windows. Przy pierwszym uruchomieniu Windows może pokazać ostrzeżenie SmartScreen. Dla pliku otrzymanego bezpośrednio z kanonicznego repo PMindLab można użyć „Więcej informacji” → „Uruchom mimo to”.
+
+Diagnostyka
+===========
+
+Jeśli Mianem nie uruchomi się poprawnie, komunikat pokaże rzeczywisty typ błędu. Szczegóły są też zapisywane lokalnie w:
+
+%LOCALAPPDATA%\PMindLab\Mianem\startup-error.txt
 
 Bezpieczeństwo
 ==============
