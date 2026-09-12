@@ -34,10 +34,24 @@ def _phrase(root: str, partner: str, position: str) -> str:
     return f"{partner} {root}" if position == "before" else f"{root} {partner}"
 
 
+def _extension(partner: str, position: str, context: str):
+    context = context if context in CONTEXTS else "neutral"
+    p = _clean(partner)
+    for ext in EXTENSIONS:
+        if ext["word"] == p and ext["position"] == position and context in ext["contexts"]:
+            return ext
+    return None
+
+
 def analyze_pair(root: str, partner: str, position: str = "before", niche: str = "", context: str = "neutral") -> dict:
     base = analyze_pair_v15(root, partner, position, niche)
     if not base.get("ok"):
         return {**base, "semantic_class":"blocked", "semantic_alert":"Połączenie zablokowane przed sprawdzaniem domeny."}
+    ext = _extension(partner, position, context)
+    phrase = _phrase(_clean(root), _clean(partner), position)
+    if ext:
+        score = 84 if ext["kind"] == "brand-frame" else 80 if ext["kind"] == "descriptor" else 72
+        return {**base,"score":score,"semantic_class":"brand-form","semantic_alert":"Świadomy format marki, nie zwykłe dwuwyrazowe znaczenie.","phrase":phrase,"interpretation_en":ext["en"],"interpretation_pl":ext["pl"],"context":context,"kind":ext["kind"]}
     score = int(base.get("score", 0))
     reasons = list(base.get("reasons", []))
     semantic = any(str(x).startswith("zgodność semantyczna") for x in reasons)
@@ -53,7 +67,6 @@ def analyze_pair(root: str, partner: str, position: str = "before", niche: str =
         alert = "Abstrakcyjne połączenie: brak mocnego naturalnego znaczenia. Może działać jako marka, ale znaczenie trzeba zbudować brandingiem."
     if weak:
         cls = "abstract"
-    phrase = _phrase(_clean(root), _clean(partner), position)
     if _known(root):
         en = f"{phrase.title()} links the meanings of the two words."
         pl = f"{phrase.title()} łączy znaczenia obu słów."
