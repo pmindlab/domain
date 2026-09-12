@@ -1,0 +1,84 @@
+:root{
+  --sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  --bg:#FAFAF7;
+  --surface:#FFFFFF;
+  --surface-2:#F4F4EF;
+  --ink:#1C1F22;
+  --muted:#6F6F6A;
+  --line:#DEDED6;
+  --line-strong:#C8C8BF;
+  --pmind:#3B72B5;
+  --lab:#16325C;
+  --pmind-soft:#EDF2F8;
+  --lab-soft:#EDF2F8;
+  --danger:#7D3F3B;
+  --danger-soft:#F7ECEB;
+  --warn:#725A31;
+  --warn-soft:#F5F0E5;
+  --success-bg:#EDF4F0;
+  --success-border:#C7D8D0;
+  --success-ink:#335D4D;
+  --danger-border:#DEC9C7;
+  --warning-border:#DED2B8;
+  --info-border:#CBD9E8;
+  --info-ink:#2C5687;
+  --shadow:0 18px 44px rgba(17,27,38,.07);
+}
+html[data-theme="dark"]{
+  --bg:#101216;
+  --surface:#171A1F;
+  --surface-2:#1D2127;
+  --ink:#F7F7F2;
+  --muted:#A7A9A4;
+  --line:#2B3037;
+  --line-strong:#3A414A;
+  --pmind:#6A9DD8;
+  --lab:#244E78;
+  --pmind-soft:#131C28;
+  --lab-soft:#131C28;
+  --danger:#E0AAA5;
+  --danger-soft:#201718;
+  --warn:#E0C47E;
+  --warn-soft:#211D14;
+  --success-bg:#121D19;
+  --success-border:#294239;
+  --success-ink:#A6CDBB;
+  --danger-border:#4B3234;
+  --warning-border:#4D4127;
+  --info-border:#2B405A;
+  --info-ink:#9EC2E8;
+  --shadow:0 18px 44px rgba(0,0,0,.24);
+}
+body{font-family:var(--sans);color:var(--ink)}
+button,input,select,textarea{font-family:var(--sans)}
+.kicker,.domain,.source,.app-id span,.stats-line,.microcopy,.taxon-name,.yield-mini,.group-label{font-family:var(--mono)}
+.site-header{min-height:128px;padding-left:32px;padding-right:32px}
+.brand-logo{width:180px}
+.brand-logo-dark{display:none}
+html[data-theme="dark"] .brand-logo-light{display:none}
+html[data-theme="dark"] .brand-logo-dark{display:block}
+.app-id strong{font-family:var(--sans);font-size:13px}
+.app-id span{font-size:11px}
+.nav-tab,.theme-toggle,.cta,.text-cta,.setting-row,.setting-block,.candidate-name,.dialog-head h2,.niche-chip{font-family:var(--sans)}
+.primary-cta,.manual-form button,.button-link,.primary-small,.nav-tab.active,.saved-tabs button.active,.layout-toggle button.active{background:var(--lab);color:#fff}
+.primary-cta:hover,.manual-form button:hover,.button-link:hover,.primary-small:hover{background:var(--pmind)}
+:where(button,input,select,textarea,a,summary):focus-visible{outline:3px solid color-mix(in srgb,var(--pmind) 42%,transparent);outline-offset:2px}
+.status{border:1px solid var(--info-border);border-left:3px solid var(--pmind);background:var(--pmind-soft);color:var(--info-ink)}
+.status.error{border-color:var(--danger-border);border-left-color:#B06D68;background:var(--danger-soft);color:var(--danger)}
+.pill.ok,.availability-pill.available{background:var(--success-bg);color:var(--success-ink);border:1px solid var(--success-border)}
+.pill.warn{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warning-border)}
+.pill.bad,.availability-pill.taken{background:var(--danger-soft);color:var(--danger);border:1px solid var(--danger-border)}
+.pill.neutral,.availability-pill{border:1px solid var(--line);background:var(--surface-2);color:var(--muted)}
+.areas-dialog{max-height:min(820px,calc(100dvh - 30px))}
+.dialog-shell{height:min(820px,calc(100dvh - 30px));max-height:inherit;min-height:0}
+.niche-groups{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;align-content:start;grid-auto-rows:max-content}
+.niche-group{height:max-content;min-height:max-content;align-self:start}
+.niche-list{align-items:flex-start;align-content:flex-start}
+.niche-chip{min-height:34px;line-height:1.25;max-width:100%}
+.dialog-head,.dialog-tools,.dialog-footer{flex:0 0 auto}
+.dialog-footer{position:relative;z-index:2}
+@media(max-width:900px){.site-header{padding-left:20px;padding-right:20px}.brand-logo{width:160px}}
+@media(max-width:560px){.site-header{padding-left:16px;padding-right:16px}.brand-logo{width:145px}.areas-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}.dialog-shell{height:calc(100dvh - 16px)}.niche-chip{min-height:40px}}
+@media(max-height:620px){.areas-dialog{max-height:calc(100dvh - 12px)}.dialog-shell{height:calc(100dvh - 12px)}.dialog-head{padding-top:14px;padding-bottom:10px}.dialog-tools{padding-top:8px;padding-bottom:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
