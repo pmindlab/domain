@@ -1,36 +1,25 @@
 # Current Task
 
-TASK_ID: mianem-windows-portable-v1-2026-09-12
+TASK_ID: mianem-windows-portable-startup-remediation-2026-09-12
 
-Status: implementation on build branch; pending Linux CI, Windows package build, packaged-executable smoke test and Human Owner handoff.
+Status: remediation in progress after real-machine startup failure.
 
 ## Trigger
-Human Owner requested a downloadable build that can be started on another Windows computer without installing Python, FastAPI or project dependencies.
+The first Windows portable build passed CI and a narrow packaged `--smoke-test`, but on a second Windows computer the real GUI launch failed and the launcher showed only the generic message `Mianem nie może się uruchomić`. The original QA gate therefore did not cover the actual user startup path.
 
-## Scope
-- Build a self-contained Windows 10/11 x64 `Mianem.exe` with PyInstaller.
-- Keep the product local: bind only to `127.0.0.1` and open the browser automatically.
-- Provide a small Windows launcher window with `Otwórz Mianem` and `Zakończ` so the local server can be stopped cleanly.
-- Store mutable user state outside the executable under `%LOCALAPPDATA%\PMindLab\Mianem`.
-- Bundle only canonical static/template/default-data files; do not bundle local SQLite state, custom niches, `.env`, API keys or other secrets.
-- Support an optional `.env` placed next to `Mianem.exe` for the existing optional GitHub/Brave keys.
-- If another Mianem instance is already running locally, open that instance instead of failing on port 8787.
-- Fall back through local ports 8787–8799 if the preferred port is occupied by another process.
-
-## Delivery contract
-The downloadable artifact is a ZIP containing:
-- `Mianem.exe`,
-- `README-URUCHOM.txt`,
-- `BUILD-INFO.txt`.
-
-The ZIP must be built on GitHub Actions `windows-latest`, not cross-compiled on Linux. A SHA-256 sidecar must be produced.
+## Remediation
+- Replace the PyInstaller single-file runtime with a portable `onedir` package so startup does not depend on extracting the whole application to a temporary directory.
+- Keep `Mianem.exe` plus its `_internal` runtime folder together inside the ZIP; no Python installation is required.
+- Add a real packaged startup smoke test on `windows-latest`: launch the normal GUI executable and require the local `/api/health` endpoint to become ready before packaging.
+- Keep the existing frozen data-loading smoke test.
+- Preserve local-only binding to `127.0.0.1` and mutable state under `%LOCALAPPDATA%\PMindLab\Mianem`.
 
 ## QA gates
-- Existing repository `pytest -q` remains green.
-- `tests/test_windows_portable.py` verifies separation of bundled defaults from mutable local state.
-- PyInstaller build on `windows-latest` succeeds.
-- The packaged `Mianem.exe --smoke-test` successfully imports the frozen application and loads niches/language sources.
-- Build workflow uploads the final ZIP and SHA-256 file.
+- Existing repository CI remains green.
+- PyInstaller `onedir` build succeeds on `windows-latest`.
+- `Mianem.exe --smoke-test` succeeds from the packaged folder.
+- A normal packaged `Mianem.exe` process starts successfully and `/api/health` responds with `ok=true` and `app=Mianem`.
+- Final ZIP is generated with SHA-256 and then re-tested by Human Owner on the second Windows computer.
 
 ## Product invariants
-Packaging must not change naming, scoring, `.com` availability, brand-screening or Workshop-curation rules. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domain may be presented as available.
+Packaging only. Naming, scoring, `.com` availability, brand-screening and Workshop-curation behavior must not change. No local DB, custom niches, `.env`, API keys or other secrets may be bundled.
