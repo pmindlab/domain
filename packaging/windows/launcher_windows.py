@@ -5,6 +5,7 @@ import os
 import socket
 import sys
 import threading
+import time
 import urllib.request
 import webbrowser
 from pathlib import Path
@@ -104,6 +105,33 @@ def smoke_test() -> int:
     return 0
 
 
+def server_smoke_test() -> int:
+    configure_runtime()
+    port = choose_port()
+    from app.main import app
+    import uvicorn
+
+    server = uvicorn.Server(uvicorn.Config(app, host=HOST, port=port, loop="asyncio", http="h11", ws="none", log_level="warning", access_log=False))
+    server_thread = threading.Thread(target=server.run, name="mianem-server-smoke", daemon=True)
+    server_thread.start()
+    deadline = time.time() + 12
+    try:
+        while time.time() < deadline:
+            try:
+                with urllib.request.urlopen(f"{app_url(port)}/api/health", timeout=0.4) as response:
+                    payload = json.loads(response.read().decode("utf-8"))
+                if payload.get("ok") is True and payload.get("app") == APP_NAME:
+                    return 0
+            except Exception:
+                if not server_thread.is_alive():
+                    break
+                time.sleep(0.15)
+        raise RuntimeError("Portable server smoke test: lokalny serwer nie osiągnął /api/health.")
+    finally:
+        server.should_exit = True
+        server_thread.join(timeout=5)
+
+
 def run_gui() -> int:
     paths = configure_runtime()
     existing = existing_mianem_port()
@@ -188,10 +216,15 @@ def run_gui() -> int:
 
 def main() -> int:
     smoke = "--smoke-test" in sys.argv
+    server_smoke = "--server-smoke-test" in sys.argv
     try:
-        return smoke_test() if smoke else run_gui()
+        if smoke:
+            return smoke_test()
+        if server_smoke:
+            return server_smoke_test()
+        return run_gui()
     except Exception as exc:
-        return 1 if smoke else raise_for_gui(exc)
+        return 1 if smoke or server_smoke else raise_for_gui(exc)
 
 
 def raise_for_gui(exc: Exception) -> int:
