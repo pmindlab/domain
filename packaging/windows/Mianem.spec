@@ -5,11 +5,10 @@ from pathlib import Path
 from PyInstaller.utils.hooks import collect_submodules
 
 ROOT = Path(SPECPATH).resolve().parents[1]
-
 hiddenimports = collect_submodules("uvicorn")
 
 a = Analysis(
-    [str(ROOT / "packaging" / "windows" / "portable_launcher.py")],
+    [str(ROOT / "packaging" / "windows" / "launcher_windows.py")],
     pathex=[str(ROOT)],
     binaries=[],
     datas=[
