@@ -1,32 +1,23 @@
 # Current Task
 
-TASK_ID: mianem-v1-6-semantic-workshop-2026-09-12
+TASK_ID: mianem-v1-6-1-ui-regressions-2026-09-12
 
-Status: implementation on feature branch; pending PR CI/review/merge.
+Status: implementation complete on fix branch; pending PR CI/review/merge.
+
+## Scope
+- Fix clipped search-area chips in the Areas dialog at desktop and short-height layouts.
+- Fix Workshop flow so a user selecting a semantic partner such as `light` can explicitly choose `Light Lark` vs `Lark Light` before the full live `.com` + brand check when both directions are active.
+- Make PMindLab Product UI v1 the canonical UI-rule source for future Mianem UI work.
 
 ## Implemented
-- Bumped product/API/package to Mianem v1.6.0.
-- Added a semantic curation layer above the v1.5 workshop engine.
-- Unknown scientific/taxonomic roots no longer pretend to have an English translation; the UI explains that they are scientific/coined roots.
-- Added explicit semantic classes: natural / brandable / abstract / brand-form.
-- Abstract combinations receive a visible warning instead of a misleading high score with no explanation.
-- Added a ranked `Najlepsze podpowiedzi Mianem` stage before the longer before/after lists.
-- Added brand-form extensions such as `The`, `One`, `New`, plus context-sensitive `Studio`, `Lab`, `Works`, `House`, `Co`, and software/product forms such as `Get`, `Use`, `App`, `AI`.
-- Added lightweight `.com` availability precheck for only the short semantic shortlist; full brand screening still runs after the human selects a combination.
-- Added a primary Workshop entry on the main search console for a user-supplied root.
-- Main Workshop can search only before, only after, or both sides of the root.
-- Added optional naming context: neutral brand / software-AI / creative studio / photography / product / service.
-- Added v1.6 API and frontend tests plus JS syntax checks in CI.
+- Added `ui-regression-v161.css` with non-shrinking content rows, internal dialog scrolling, dynamic viewport height and mobile/short-height handling.
+- Added `workshop-direction-v161.js`: top semantic suggestions now pause at a human direction choice when both sides are enabled; brand-form extensions keep their fixed grammatical direction.
+- Added direction-choice styles and CI JS syntax coverage.
+- Added static regression tests for dialog layout, direction choice and UI-rule authority.
+- Updated `AGENTS.md` to point to `pmindlab/pmindlab/design-system/PMINDLAB_PRODUCT_UI_V1.md` and its responsive workflow.
 
-## Product workflow
-root → meaning/context → best semantic combinations → brand-form extensions → live `.com` precheck → human choice → full `.com` + brand screen.
-
-## Follow-up
-1. Replace local semantic heuristics with a stronger semantic curator for top-N candidates while keeping deterministic filters and explanations.
-2. Expand bilingual lexical/taxonomic descriptions and partner graph.
-3. Add genuine new-area discovery outside the current taxonomy catalog.
-4. Add persistent workshop history/workbench after interaction patterns stabilize.
-5. Migrate legacy `namelab.db` only through an explicit data migration so user history is preserved.
+## UI audit finding
+Mianem v1.6 is not yet fully PMindLab Product UI v1 compliant. The existing app still uses several legacy visual tokens and global monospace styling. Full visual standardisation is deliberately not mixed into this regression fix; it should be a separate UI adoption task with responsive/static review across the required test matrix.
 
 ## Product invariant
 Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available. Negative constructions are rejected before availability checks.

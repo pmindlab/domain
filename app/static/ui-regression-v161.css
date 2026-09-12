@@ -1,0 +1,9 @@
+.areas-dialog{max-height:min(820px,calc(100dvh - 30px))}
+.dialog-shell{height:min(820px,calc(100dvh - 30px));max-height:inherit;min-height:0}
+.dialog-head,.dialog-tools,.dialog-footer{flex:0 0 auto}
+.niche-groups{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;align-content:start;grid-auto-rows:max-content}
+.niche-group{height:max-content;min-height:max-content;align-self:start}
+.niche-list{align-items:flex-start;align-content:flex-start}
+.niche-chip{min-height:34px;line-height:1.25;max-width:100%}
+@media(max-width:560px){.areas-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}.dialog-shell{height:calc(100dvh - 16px)}.niche-chip{min-height:40px}}
+@media(max-height:620px){.areas-dialog{max-height:calc(100dvh - 12px)}.dialog-shell{height:calc(100dvh - 12px)}.dialog-head{padding-top:14px;padding-bottom:10px}.dialog-tools{padding-top:8px;padding-bottom:8px}}
