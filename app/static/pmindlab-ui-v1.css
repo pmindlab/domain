@@ -13,6 +13,9 @@
   --lab: #16325C;
   --pmind-soft: #E8F0F8;
   --lab-soft: #E7EBF1;
+  --action: #16325C;
+  --action-hover: #3B72B5;
+  --action-ink: #FFFFFF;
 
   --success: #335D4D;
   --success-accent: #7FAE99;
@@ -47,9 +50,12 @@ html[data-theme="dark"] {
   --line: #2B3037;
   --line-strong: #3A414A;
   --pmind: #6A9DD8;
-  --lab: #C3D9F0;
+  --lab: #16325C;
   --pmind-soft: #17283A;
   --lab-soft: #182131;
+  --action: #244E78;
+  --action-hover: #315F93;
+  --action-ink: #FFFFFF;
 
   --success: #A6CDBB;
   --success-accent: #86AD9C;
@@ -131,8 +137,28 @@ summary {
   color: var(--lab);
   letter-spacing: -.01em;
 }
-
 html[data-theme="dark"] .domain { color: var(--pmind); }
+
+.nav-tab.active,
+.primary-cta,
+.decision-row button.active,
+.saved-tabs button.active,
+.manual-form button,
+.button-link,
+.primary-small,
+.custom-grid button {
+  background: var(--action);
+  border-color: var(--action);
+  color: var(--action-ink);
+}
+.primary-cta:hover,
+.manual-form button:hover,
+.button-link:hover,
+.primary-small:hover,
+.custom-grid button:hover {
+  background: var(--action-hover);
+  border-color: var(--action-hover);
+}
 
 .status {
   border-left-color: var(--pmind);
