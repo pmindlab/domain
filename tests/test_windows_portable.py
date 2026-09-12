@@ -60,14 +60,22 @@ def test_portable_runtime_requires_all_seed_files(tmp_path, monkeypatch):
         raise AssertionError("Expected missing portable seed data to block startup")
 
 
-def test_windows_package_uses_onedir_runtime():
+def test_windows_package_remains_single_executable():
     spec_text = (ROOT / "packaging" / "windows" / "Mianem.spec").read_text(encoding="utf-8")
-    assert "exclude_binaries=True" in spec_text
-    assert "COLLECT(" in spec_text
+    assert "a.binaries" in spec_text
+    assert "a.datas" in spec_text
+    assert "COLLECT(" not in spec_text
+
+
+def test_windowed_uvicorn_does_not_configure_console_formatter():
+    launcher_text = MODULE_PATH.read_text(encoding="utf-8")
+    assert "log_config=None" in launcher_text
+    assert "--server-smoke-test" in launcher_text
 
 
 def test_startup_alert_exposes_real_exception():
     launcher_text = MODULE_PATH.read_text(encoding="utf-8")
     assert "except Exception as exc:" in launcher_text
     assert "{type(exc).__name__}: {exc}" in launcher_text
+    assert "startup-error.txt" in launcher_text
     assert "Spróbuj ponownie po ponownym rozpakowaniu pakietu" not in launcher_text
