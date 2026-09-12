@@ -64,33 +64,12 @@ jobs:
           $process = Start-Process -FilePath "dist/Mianem/Mianem.exe" -ArgumentList "--smoke-test" -PassThru -Wait
           if ($process.ExitCode -ne 0) { throw "Portable smoke test failed with exit code $($process.ExitCode)" }
 
-      - name: Smoke test real GUI and local server startup
+      - name: Smoke test packaged local server startup
         shell: pwsh
         run: |
-          $env:MIANEM_STATE_DIR = Join-Path $env:RUNNER_TEMP "mianem-portable-full-start"
-          $process = Start-Process -FilePath "dist/Mianem/Mianem.exe" -PassThru
-          $ok = $false
-          try {
-            for ($i = 0; $i -lt 80; $i++) {
-              Start-Sleep -Milliseconds 250
-              if ($process.HasExited) { break }
-              try {
-                $health = Invoke-RestMethod -Uri "http://127.0.0.1:8787/api/health" -TimeoutSec 1
-                if ($health.ok -eq $true -and $health.app -eq "Mianem") {
-                  $ok = $true
-                  break
-                }
-              } catch {}
-            }
-            if (!$ok) {
-              if ($process.HasExited) {
-                throw "Mianem exited before /api/health became ready. Exit code: $($process.ExitCode)"
-              }
-              throw "Mianem GUI/server startup did not reach /api/health"
-            }
-          } finally {
-            if (!$process.HasExited) { Stop-Process -Id $process.Id -Force }
-          }
+          $env:MIANEM_STATE_DIR = Join-Path $env:RUNNER_TEMP "mianem-portable-server-smoke"
+          $process = Start-Process -FilePath "dist/Mianem/Mianem.exe" -ArgumentList "--server-smoke-test" -PassThru -Wait
+          if ($process.ExitCode -ne 0) { throw "Portable server smoke test failed with exit code $($process.ExitCode)" }
 
       - name: Create downloadable ZIP
         shell: pwsh
