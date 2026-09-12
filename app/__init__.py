@@ -1,4 +1,4 @@
-__version__ = "1.7.2"
+__version__ = "1.7.3"
 
 # Extend the v1.7 curator with a larger, still-curated context pool before
 # app.main imports the legacy-named workshop_v16 module.
