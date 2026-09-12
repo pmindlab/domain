@@ -1,9 +1,9 @@
-NameLab v1.4
+Mianem v1.4.1
 
 WINDOWS
 1. Rozpakuj ZIP.
 2. Kliknij run.bat.
-3. NameLab otworzy się lokalnie w przeglądarce.
+3. Mianem otworzy się lokalnie w przeglądarce.
 
 INTERFEJS
 - Wybierz obszary.
