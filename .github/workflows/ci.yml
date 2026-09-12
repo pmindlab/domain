@@ -29,6 +29,7 @@ jobs:
           node --check app/static/app.js
           node --check app/static/workshop-v16.js
           node --check app/static/workshop-direction-v161.js
+          node --check app/static/product-ui-v1.js
           node --check app/static/branding-v16.js
           node --check app/static/workshop-v15.js
           node --check app/static/core-v15a.js

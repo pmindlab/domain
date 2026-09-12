@@ -1,0 +1,98 @@
+:root {
+  /* PMindLab Product UI v1 — canonical shared tokens */
+
+  --pmind-font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --pmind-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --pmind-brand-blue: #3B72B5;
+  --pmind-brand-navy: #16325C;
+  --pmind-brand-blue-on-dark: #6A9DD8;
+  --pmind-brand-lab-on-dark: #C3D9F0;
+
+  /* Interactive fills are deliberately separate from wordmark colours. */
+  --pmind-action: #16325C;
+  --pmind-action-hover: #3B72B5;
+  --pmind-action-ink: #FFFFFF;
+
+  --pmind-bg: #FAFAF7;
+  --pmind-surface: #FFFFFF;
+  --pmind-surface-2: #F4F4EF;
+  --pmind-ink: #1C1F22;
+  --pmind-muted: #6F6F6A;
+  --pmind-line: #DEDED6;
+  --pmind-line-strong: #C8C8BF;
+
+  --pmind-success-bg: #EDF4F0;
+  --pmind-success-border: #C7D8D0;
+  --pmind-success-accent: #7FAE99;
+  --pmind-success-ink: #335D4D;
+
+  --pmind-danger-bg: #F7ECEB;
+  --pmind-danger-border: #DEC9C7;
+  --pmind-danger-accent: #B06D68;
+  --pmind-danger-ink: #7D3F3B;
+
+  --pmind-warning-bg: #F5F0E5;
+  --pmind-warning-border: #DED2B8;
+  --pmind-warning-accent: #B08D55;
+  --pmind-warning-ink: #725A31;
+
+  --pmind-info-bg: #EDF2F8;
+  --pmind-info-border: #CBD9E8;
+  --pmind-info-accent: #3B72B5;
+  --pmind-info-ink: #2C5687;
+
+  --pmind-neutral-status-bg: #F6F6F2;
+  --pmind-neutral-status-border: #D3D2CB;
+  --pmind-neutral-status-accent: #9A9D96;
+
+  --pmind-radius-sm: 10px;
+  --pmind-radius-md: 14px;
+  --pmind-radius-lg: 20px;
+  --pmind-radius-pill: 999px;
+
+  --pmind-shadow: 0 18px 44px rgba(17, 27, 38, .07);
+}
+
+html[data-theme="dark"] {
+  --pmind-bg: #101216;
+  --pmind-surface: #171A1F;
+  --pmind-surface-2: #1D2127;
+  --pmind-ink: #F7F7F2;
+  --pmind-muted: #A7A9A4;
+  --pmind-line: #2B3037;
+  --pmind-line-strong: #3A414A;
+
+  --pmind-brand-blue: #6A9DD8;
+
+  /* #6A9DD8 is a brand/focus accent, not a white-text button fill. */
+  --pmind-action: #244E78;
+  --pmind-action-hover: #315F93;
+  --pmind-action-ink: #FFFFFF;
+
+  --pmind-success-bg: #121D19;
+  --pmind-success-border: #294239;
+  --pmind-success-accent: #86AD9C;
+  --pmind-success-ink: #A6CDBB;
+
+  --pmind-danger-bg: #201718;
+  --pmind-danger-border: #4B3234;
+  --pmind-danger-accent: #C7837D;
+  --pmind-danger-ink: #E0AAA5;
+
+  --pmind-warning-bg: #211D14;
+  --pmind-warning-border: #4D4127;
+  --pmind-warning-accent: #D5B56C;
+  --pmind-warning-ink: #E0C47E;
+
+  --pmind-info-bg: #131C28;
+  --pmind-info-border: #2B405A;
+  --pmind-info-accent: #6A9DD8;
+  --pmind-info-ink: #9EC2E8;
+
+  --pmind-neutral-status-bg: #181B20;
+  --pmind-neutral-status-border: #343941;
+  --pmind-neutral-status-accent: #949A9D;
+
+  --pmind-shadow: 0 18px 44px rgba(0, 0, 0, .24);
+}
