@@ -69,7 +69,15 @@ jobs:
         run: |
           $env:MIANEM_STATE_DIR = Join-Path $env:RUNNER_TEMP "mianem-portable-server-smoke"
           $process = Start-Process -FilePath "dist/Mianem/Mianem.exe" -ArgumentList "--server-smoke-test" -PassThru -Wait
-          if ($process.ExitCode -ne 0) { throw "Portable server smoke test failed with exit code $($process.ExitCode)" }
+          if ($process.ExitCode -ne 0) {
+            $log = Join-Path $env:MIANEM_STATE_DIR "startup-error.txt"
+            if (Test-Path $log) {
+              Write-Host "--- Mianem startup diagnostic ---"
+              Get-Content $log
+              Write-Host "--- end diagnostic ---"
+            }
+            throw "Portable server smoke test failed with exit code $($process.ExitCode)"
+          }
 
       - name: Create downloadable ZIP
         shell: pwsh
