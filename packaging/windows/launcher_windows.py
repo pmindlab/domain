@@ -109,6 +109,23 @@ def choose_port() -> int:
     raise RuntimeError("Nie znaleziono wolnego lokalnego portu 8787–8799.")
 
 
+def make_server(app, port: int):
+    import uvicorn
+
+    return uvicorn.Server(
+        uvicorn.Config(
+            app,
+            host=HOST,
+            port=port,
+            loop="asyncio",
+            http="h11",
+            ws="none",
+            log_config=None,
+            access_log=False,
+        )
+    )
+
+
 def smoke_test() -> int:
     configure_runtime()
     from app.main import service
@@ -121,9 +138,8 @@ def server_smoke_test() -> int:
     configure_runtime()
     port = choose_port()
     from app.main import app
-    import uvicorn
 
-    server = uvicorn.Server(uvicorn.Config(app, host=HOST, port=port, loop="asyncio", http="h11", ws="none", log_level="warning", access_log=False))
+    server = make_server(app, port)
     server_errors: list[tuple[Exception, str]] = []
 
     def serve() -> None:
@@ -167,10 +183,17 @@ def run_gui() -> int:
     from app.main import app
     import tkinter as tk
     from tkinter import messagebox, ttk
-    import uvicorn
 
-    server = uvicorn.Server(uvicorn.Config(app, host=HOST, port=port, loop="asyncio", http="h11", ws="none", log_level="warning", access_log=False))
-    server_thread = threading.Thread(target=server.run, name="mianem-server", daemon=True)
+    server = make_server(app, port)
+    server_errors: list[tuple[Exception, str]] = []
+
+    def serve() -> None:
+        try:
+            server.run()
+        except Exception as exc:
+            server_errors.append((exc, traceback.format_exc()))
+
+    server_thread = threading.Thread(target=serve, name="mianem-server", daemon=True)
 
     root = tk.Tk()
     root.title(f"Mianem {__version__}")
@@ -207,7 +230,14 @@ def run_gui() -> int:
             return
         if not server_thread.is_alive():
             status.set("Nie udało się uruchomić Mianem.")
-            messagebox.showerror(APP_NAME, "Nie udało się uruchomić lokalnego serwera Mianem.")
+            if server_errors:
+                exc, tb = server_errors[0]
+                log_path = write_startup_error(exc, tb)
+                detail = f"{type(exc).__name__}: {exc}"
+            else:
+                log_path = None
+                detail = "Lokalny serwer zakończył pracę podczas startu."
+            messagebox.showerror(APP_NAME, f"Nie udało się uruchomić lokalnego serwera Mianem.\n\n{detail}\n\nLog: {log_path or 'niedostępny'}")
             return
         root.after(120, poll_startup)
 
