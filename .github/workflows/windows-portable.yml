@@ -51,24 +51,24 @@ jobs:
           $version = (python -c "from app import __version__; print(__version__)").Trim()
           "MIANEM_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
-      - name: Build Mianem portable folder
+      - name: Build Mianem.exe
         shell: pwsh
         run: |
           python -m PyInstaller --noconfirm --clean packaging/windows/Mianem.spec
-          if (!(Test-Path "dist/Mianem/Mianem.exe")) { throw "dist/Mianem/Mianem.exe was not produced" }
+          if (!(Test-Path "dist/Mianem.exe")) { throw "dist/Mianem.exe was not produced" }
 
       - name: Smoke test packaged executable data loading
         shell: pwsh
         run: |
           $env:MIANEM_STATE_DIR = Join-Path $env:RUNNER_TEMP "mianem-portable-smoke"
-          $process = Start-Process -FilePath "dist/Mianem/Mianem.exe" -ArgumentList "--smoke-test" -PassThru -Wait
+          $process = Start-Process -FilePath "dist/Mianem.exe" -ArgumentList "--smoke-test" -PassThru -Wait
           if ($process.ExitCode -ne 0) { throw "Portable smoke test failed with exit code $($process.ExitCode)" }
 
       - name: Smoke test packaged local server startup
         shell: pwsh
         run: |
           $env:MIANEM_STATE_DIR = Join-Path $env:RUNNER_TEMP "mianem-portable-server-smoke"
-          $process = Start-Process -FilePath "dist/Mianem/Mianem.exe" -ArgumentList "--server-smoke-test" -PassThru -Wait
+          $process = Start-Process -FilePath "dist/Mianem.exe" -ArgumentList "--server-smoke-test" -PassThru -Wait
           if ($process.ExitCode -ne 0) {
             $log = Join-Path $env:MIANEM_STATE_DIR "startup-error.txt"
             if (Test-Path $log) {
@@ -84,11 +84,11 @@ jobs:
         run: |
           $release = "release"
           New-Item -ItemType Directory -Force -Path $release | Out-Null
-          Copy-Item "dist/Mianem/*" $release -Recurse
+          Copy-Item "dist/Mianem.exe" "$release/Mianem.exe"
           Copy-Item "packaging/windows/README-URUCHOM.txt" "$release/README-URUCHOM.txt"
           @(
             "Mianem $env:MIANEM_VERSION"
-            "Windows 10/11 x64 portable folder build"
+            "Windows 10/11 x64 portable single-executable build"
             "Source commit: $env:GITHUB_SHA"
             "Built by GitHub Actions on windows-latest"
           ) | Set-Content "$release/BUILD-INFO.txt" -Encoding utf8
