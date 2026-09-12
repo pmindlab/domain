@@ -10,9 +10,10 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .service import NameLabService
+from .workshop import analyze_pair, workshop
 
 ROOT = Path(__file__).resolve().parent
-app = FastAPI(title="Mianem", version="1.4.1")
+app = FastAPI(title="Mianem", version="1.5.0")
 app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 service = NameLabService()
 
@@ -63,6 +64,20 @@ class DecisionRequest(BaseModel):
     note: str = ""
 
 
+class WorkshopRequest(BaseModel):
+    root: str
+    niche: str = ""
+    limit: int = 8
+
+
+class WorkshopCheckRequest(BaseModel):
+    root: str
+    partner: str
+    position: str = "before"
+    niche: str = ""
+    brand_check: bool = True
+
+
 @app.get("/", response_class=HTMLResponse)
 async def index():
     return (ROOT / "templates" / "index.html").read_text(encoding="utf-8")
@@ -74,10 +89,11 @@ async def health():
     return {
         "ok": True,
         "app": "Mianem",
-        "version": "1.4.1",
+        "version": "1.5.0",
         "niche_count": len(niches),
         "custom_niche_count": sum(1 for n in niches if n.get("custom")),
         "language_count": len(service.list_languages()),
+        "workshop": True,
     }
 
 
@@ -169,6 +185,35 @@ async def check(req: CheckRequest):
         raise HTTPException(400, str(exc))
     except Exception as exc:
         raise HTTPException(500, f"Check failed: {type(exc).__name__}: {exc}")
+
+
+@app.post("/api/workshop")
+async def naming_workshop(req: WorkshopRequest):
+    try:
+        return workshop(req.root, req.niche, max(4, min(req.limit, 12)))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+
+
+@app.post("/api/workshop/check")
+async def workshop_check(req: WorkshopCheckRequest):
+    if req.position not in {"before", "after"}:
+        raise HTTPException(400, "position must be before or after")
+    analysis = analyze_pair(req.root, req.partner, req.position, req.niche)
+    if not analysis.get("ok"):
+        return {**analysis, "domain_status": "blocked", "brand_status": "blocked"}
+    domain = analysis["domain"]
+    dr = await service.domain.check(domain)
+    result = {**analysis, "domain_status": dr.status, "brand_status": "unchecked"}
+    if dr.status == "available" and req.brand_check:
+        br = await service.brand.screen(analysis["joined"])
+        result.update({
+            "brand_status": br.status,
+            "github_hits": br.github_hits,
+            "web_hits": br.web_hits,
+            "brand_notes": br.notes,
+        })
+    return result
 
 
 @app.post("/api/candidates/{name}/decision")
