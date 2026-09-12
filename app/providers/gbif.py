@@ -27,7 +27,7 @@ class GBIFProvider:
         return r.json()
 
     async def match_taxon(self, taxon_name: str) -> dict:
-        headers = {"User-Agent": "NameLab/1.4 taxonomy research"}
+        headers = {"User-Agent": "Mianem/1.5 taxonomy research"}
         async with httpx.AsyncClient(timeout=self.timeout, headers=headers, follow_redirects=True) as client:
             data = await self._get(client, "/species/match", {"name": taxon_name})
         key = data.get("usageKey") or data.get("nubKey") or data.get("key")
@@ -53,7 +53,7 @@ class GBIFProvider:
         return None
 
     async def genera_for_niche(self, taxon_name: str, label: str, limit: int = 120) -> list[TaxonHit]:
-        headers = {"User-Agent": "NameLab/1.4 taxonomy research"}
+        headers = {"User-Agent": "Mianem/1.5 taxonomy research"}
         async with httpx.AsyncClient(timeout=self.timeout, headers=headers, follow_redirects=True) as client:
             key = await self.resolve_taxon(client, taxon_name)
             if not key:
