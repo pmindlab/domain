@@ -9,9 +9,9 @@
   --pmind-brand-blue-on-dark: #6A9DD8;
   --pmind-brand-lab-on-dark: #C3D9F0;
 
-  /* Interactive fills are deliberately separate from wordmark colours. */
-  --pmind-action: #16325C;
-  --pmind-action-hover: #3B72B5;
+  /* Primary actions use PMind blue; Lab/navy remains a brand/wordmark colour. */
+  --pmind-action: #3B72B5;
+  --pmind-action-hover: #4D82C1;
   --pmind-action-ink: #FFFFFF;
 
   --pmind-bg: #FAFAF7;
@@ -65,10 +65,10 @@ html[data-theme="dark"] {
 
   --pmind-brand-blue: #6A9DD8;
 
-  /* #6A9DD8 is a brand/focus accent, not a white-text button fill. */
-  --pmind-action: #244E78;
-  --pmind-action-hover: #315F93;
-  --pmind-action-ink: #FFFFFF;
+  /* PMind-on-dark is light enough to use as fill only with dark action ink. */
+  --pmind-action: #6A9DD8;
+  --pmind-action-hover: #83AFE0;
+  --pmind-action-ink: #101216;
 
   --pmind-success-bg: #121D19;
   --pmind-success-border: #294239;
