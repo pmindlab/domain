@@ -13,7 +13,7 @@ from .service import NameLabService
 from .workshop_v16 import analyze_pair, workshop
 
 ROOT = Path(__file__).resolve().parent
-app = FastAPI(title="Mianem", version="1.6.0")
+app = FastAPI(title="Mianem", version="1.7.0")
 app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 service = NameLabService()
 
@@ -68,7 +68,7 @@ class WorkshopRequest(BaseModel):
     root: str
     niche: str = ""
     context: str = "neutral"
-    limit: int = 8
+    limit: int = 24
 
 
 class WorkshopCheckRequest(BaseModel):
@@ -103,12 +103,13 @@ async def health():
     return {
         "ok": True,
         "app": "Mianem",
-        "version": "1.6.0",
+        "version": "1.7.0",
         "niche_count": len(niches),
         "custom_niche_count": sum(1 for n in niches if n.get("custom")),
         "language_count": len(service.list_languages()),
         "workshop": True,
         "semantic_workshop": True,
+        "construction_families": True,
     }
 
 
@@ -205,7 +206,7 @@ async def check(req: CheckRequest):
 @app.post("/api/workshop")
 async def naming_workshop(req: WorkshopRequest):
     try:
-        return workshop(req.root, req.niche, max(4, min(req.limit, 12)), req.context)
+        return workshop(req.root, req.niche, max(8, min(req.limit, 32)), req.context)
     except ValueError as exc:
         raise HTTPException(400, str(exc))
 
@@ -213,7 +214,7 @@ async def naming_workshop(req: WorkshopRequest):
 @app.post("/api/workshop/availability")
 async def workshop_availability(req: WorkshopAvailabilityRequest):
     rows = []
-    for item in req.items[:20]:
+    for item in req.items[:40]:
         if item.position not in {"before", "after"}:
             continue
         analysis = analyze_pair(req.root, item.partner, item.position, req.niche, req.context)

@@ -23,7 +23,9 @@ def test_brand_extension_keeps_brand_form_semantics():
     assert result['ok'] is True
     assert result['domain'] == 'thelark.com'
     assert result['semantic_class'] == 'brand-form'
-    assert 'format marki' in result['semantic_alert']
+    assert result['recommendation_tier'] in {'recommended', 'good'}
+    assert result['interpretation_en']
+    assert result['interpretation_pl']
 
 
 def test_abstract_pair_gets_explicit_warning():

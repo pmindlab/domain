@@ -9,9 +9,10 @@ def test_health():
     data = r.json()
     assert data['ok'] is True
     assert data['app'] == 'Mianem'
-    assert data['version'] == '1.6.0'
+    assert data['version'] == '1.7.0'
     assert data['workshop'] is True
     assert data['semantic_workshop'] is True
+    assert data['construction_families'] is True
     assert data['niche_count'] >= 60
 
 
@@ -36,3 +37,4 @@ def test_workshop_lark():
     assert data['before'][0]['word'] == 'dawn'
     assert data['after'][0]['word'] == 'wing'
     assert {'the', 'one'} <= {x['word'] for x in data['extensions']}
+    assert data['families']
