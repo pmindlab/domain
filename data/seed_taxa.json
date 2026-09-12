@@ -1,0 +1,17 @@
+{
+  "jewel_beetles": ["Lampetis","Belionota","Dicerca","Julodis","Micrasta","Ptosima","Paracupta","Paratassa","Odettea","Cobosella","Chrysodema","Hiperantha"],
+  "fireflies": ["Lucidota","Aspisoma","Amydetes","Ellychnia"],
+  "glowworm_beetles": ["Akamboja","Zarhipis","Pterotus"],
+  "butterflies": ["Dixeia","Poritia","Gandaca","Saletara","Belenois","Pareronia","Iraota","Drupadia","Niphanda","Callenya","Tajuria","Eurytela"],
+  "moths": ["Pergesa","Panacra","Theretra","Pachylia","Dirphia","Bunaea","Utetheisa","Nyctemera","Eudocima","Amastus"],
+  "dragonflies": ["Acisoma","Cratilla","Uracis","Dythemis","Libellago","Heliocypha","Rhinocypha"],
+  "hummingbirds": ["Ilicura","Eophona","Augastes","Chalybura","Ocreatus","Doryfera","Eulampis","Urochroa","Leucolia"],
+  "tropical_birds": ["Eumyias","Alaemon","Lamprolia","Neopelma","Xenopipo","Querula","Stilpnia","Pipreola","Ispidina","Ptiloris"],
+  "nudibranchs": ["Triopha","Bosellia","Cadlina","Jorunna","Tylodina","Thorunna","Felimida","Trapania","Tambja","Cuthona","Atagema","Halgerda","Hallaxa","Thordisa"],
+  "lanternfish": ["Diaphus","Hygophum","Myctophum","Benthosema","Lobianchia"],
+  "ctenophores": ["Bolinopsis","Ocyropsis","Dryodora","Callianira","Bathocyroe"],
+  "hydrozoa": ["Euphysa","Linantha","Dipurena","Aglaura","Mitrocoma"],
+  "corals": ["Oxypora","Isopora","Pectinia","Cynarina","Leptoseris","Pachyseris","Echinopora","Mycedium"],
+  "hawkmoths": ["Pergesa","Panacra","Theretra","Pachylia","Dirphia","Bunaea","Utetheisa","Nyctemera","Eudocima","Amastus"],
+  "manakins": ["Eumyias","Alaemon","Lamprolia","Neopelma","Xenopipo","Querula","Stilpnia","Pipreola","Ispidina","Ptiloris"]
+}
