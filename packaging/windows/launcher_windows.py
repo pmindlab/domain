@@ -190,16 +190,16 @@ def main() -> int:
     smoke = "--smoke-test" in sys.argv
     try:
         return smoke_test() if smoke else run_gui()
-    except Exception:
-        return 1 if smoke else raise_for_gui()
+    except Exception as exc:
+        return 1 if smoke else raise_for_gui(exc)
 
 
-def raise_for_gui() -> int:
+def raise_for_gui(exc: Exception) -> int:
     import tkinter as tk
     from tkinter import messagebox
     root = tk.Tk()
     root.withdraw()
-    messagebox.showerror(APP_NAME, "Mianem nie może się uruchomić. Spróbuj ponownie po ponownym rozpakowaniu pakietu.")
+    messagebox.showerror(APP_NAME, f"Mianem nie może się uruchomić.\n\n{type(exc).__name__}: {exc}")
     root.destroy()
     return 1
 
