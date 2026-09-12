@@ -1,7 +1,7 @@
-# NameLab — agent instructions
+# Mianem — agent instructions
 
 ## Purpose
-NameLab is a local naming research engine for finding brandable names with an actually available `.com`.
+Mianem is a local naming research engine and naming workshop for finding brandable names with an actually available `.com`.
 
 ## Product invariants
 1. Never present aftermarket, auction, broker, or merely expiring domains as available.
@@ -10,6 +10,7 @@ NameLab is a local naming research engine for finding brandable names with an ac
 4. Prefer real words, real taxa, and curated language terms over synthetic startup-style blends.
 5. Keep the UI simple. Advanced pipeline parameters belong behind presets rather than on the primary screen.
 6. Brand screening is risk triage, not legal trademark clearance.
+7. Two-word naming must use semantic compatibility and negative-meaning screening; never brute-force meaningless word pairs.
 
 ## Development workflow
 Before changing code, read:
