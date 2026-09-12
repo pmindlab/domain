@@ -13,13 +13,13 @@ NameLab is a local naming research engine for finding brandable names with an ac
 
 ## Development workflow
 Before changing code, read:
-- `.ai/PROJECT_STATE.md`
-- `.ai/CURRENT_TASK.md`
+- `PROJECT_STATE.md`
+- `CURRENT_TASK.md`
 
 For every change:
 1. preserve the invariants above,
 2. add or update tests,
 3. run `pytest -q`,
-4. update `.ai/CURRENT_TASK.md` when the work materially changes project state.
+4. update `CURRENT_TASK.md` when the work materially changes project state.
 
 Do not commit local SQLite state, secrets, `.env`, or user-added custom niches.
