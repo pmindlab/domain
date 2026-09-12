@@ -1,12 +1,14 @@
 from fastapi.testclient import TestClient
 from app.main import app
 
+
 def test_health():
     client = TestClient(app)
     r = client.get('/api/health')
     assert r.status_code == 200
     assert r.json()['ok'] is True
-    assert r.json()['version'] == '1.4.0'
+    assert r.json()['app'] == 'Mianem'
+    assert r.json()['version'] == '1.4.1'
     assert r.json()['niche_count'] >= 60
 
 
