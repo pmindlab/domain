@@ -6,10 +6,12 @@ def test_health():
     client = TestClient(app)
     r = client.get('/api/health')
     assert r.status_code == 200
-    assert r.json()['ok'] is True
-    assert r.json()['app'] == 'Mianem'
-    assert r.json()['version'] == '1.4.1'
-    assert r.json()['niche_count'] >= 60
+    data = r.json()
+    assert data['ok'] is True
+    assert data['app'] == 'Mianem'
+    assert data['version'] == '1.5.0'
+    assert data['workshop'] is True
+    assert data['niche_count'] >= 60
 
 
 def test_languages():
@@ -18,3 +20,16 @@ def test_languages():
     assert r.status_code == 200
     keys = {x['key'] for x in r.json()['languages']}
     assert {'en','pl','es','fr','la','zh-pinyin'} <= keys
+
+
+def test_workshop_lark():
+    client = TestClient(app)
+    r = client.post('/api/workshop', json={'root': 'lark', 'niche': 'birds', 'limit': 8})
+    assert r.status_code == 200
+    data = r.json()
+    assert data['root']['word'] == 'lark'
+    assert 'skowronek' in data['root']['pl']
+    assert data['before']
+    assert data['after']
+    assert data['before'][0]['word'] == 'dawn'
+    assert data['after'][0]['word'] == 'wing'
