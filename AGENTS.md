@@ -12,6 +12,19 @@ Mianem is a local naming research engine and naming workshop for finding brandab
 6. Brand screening is risk triage, not legal trademark clearance.
 7. Two-word naming must use semantic compatibility and negative-meaning screening; never brute-force meaningless word pairs.
 
+## UI authority
+The canonical source of shared PMindLab product-interface rules is:
+
+`pmindlab/pmindlab/design-system/PMINDLAB_PRODUCT_UI_V1.md`
+
+The standard was introduced on `feature/pmindlab-product-ui-v1-2026-09-12`; use the canonical PMindLab repository copy and follow newer versions only when the Human Owner adopts them.
+
+For materially changed UI use:
+
+`CURRENT REALITY -> USER TASK -> INFORMATION ARCHITECTURE -> RESPONSIVE CONTRACT -> RESPONSIVE STATIC -> INTERACTION -> TEST MATRIX -> FREEZE`
+
+Responsive behavior is correctness, not later polish. Review at minimum 320–480, 481–767, 768–1023, 1024–1439 and 1440+ widths, plus short-height/mobile-landscape when relevant. Do not silently invent near-duplicate brand tokens or component rules; document deliberate product-specific divergence.
+
 ## Development workflow
 Before changing code, read:
 - `PROJECT_STATE.md`
