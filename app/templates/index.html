@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
-  <title>Mianem v1.4.1 — PMindLab</title>
+  <title>Mianem v1.7 — PMindLab</title>
   <link rel="stylesheet" href="/static/app.css" />
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="#" aria-label="Mianem — strona główna">
       <img src="/static/logo.svg" alt="PMindLab" class="brand-logo" />
-      <div class="app-id"><strong>Mianem</strong><span>v1.4.1</span></div>
+      <div class="app-id"><strong>Mianem</strong><span>v1.7</span></div>
     </a>
 
     <nav class="main-nav" aria-label="Główna nawigacja">
@@ -58,184 +58,162 @@
             <label for="lengthPreset" class="setting-label">DŁUGOŚĆ NAZWY</label>
             <select id="lengthPreset">
               <option value="6-8">6–8 liter · preferowane</option>
-              <option value="5-9" selected>5–9 liter · szerzej</option>
-              <option value="4-9">4–9 liter · bardzo szeroko</option>
+              <option value="5-9" selected>5–9 liter · szersze</option>
+              <option value="4-9">4–9 liter · bardzo szerokie</option>
               <option value="3-9">3–9 liter · pełny zakres</option>
               <option value="3-5">3–5 liter · ultra krótkie</option>
-              <option value="7-9">7–9 liter · dłużej</option>
+              <option value="7-9">7–9 liter · dłuższe</option>
             </select>
           </div>
 
-          <button class="cta primary-cta" id="searchBtn" type="button">Szukaj wolnych .com</button>
-          <button class="text-cta" id="exploreBtn" type="button">✦ Eksploruj nowe obszary</button>
+          <button class="cta primary-cta" id="searchBtn" type="button">Znajdź nazwę</button>
+          <button class="cta secondary-cta" id="exploreBtn" type="button">Sprawdź inne obszary</button>
+          <p class="microcopy">Pokazujemy tylko `.com`, które przejdą live check dostępności. Screening marki to triage ryzyka, nie porada prawna.</p>
         </div>
       </div>
 
       <section class="results-section">
-        <div id="status" class="status hidden"></div>
         <div class="results-head">
           <div>
-            <h2 id="resultsTitle">Wyniki</h2>
-            <p id="resultsHint" class="muted">Najlepsze wolne `.com` pojawią się tutaj.</p>
+            <div class="kicker">WYNIKI</div>
+            <h2 id="resultsTitle">Gotowe do szukania</h2>
           </div>
-          <div class="result-actions hidden" id="resultTools">
-            <div class="layout-toggle" aria-label="Widok wyników">
-              <button type="button" data-layout="grid" title="Grid">▦</button>
-              <button type="button" data-layout="list" title="Lista">☰</button>
+          <div class="result-actions">
+            <div class="layout-toggle" aria-label="Układ wyników">
+              <button type="button" data-layout="grid" class="active">▦</button>
+              <button type="button" data-layout="list">☰</button>
             </div>
-            <select id="sortSelect" aria-label="Sortowanie">
-              <option value="score">Najlepsze</option>
-              <option value="name">A–Z</option>
-            </select>
-            <label class="check"><input id="onlyClear" type="checkbox" /> tylko clear</label>
+            <button class="text-cta" id="manualCheckBtn" type="button">Sprawdź własną nazwę</button>
           </div>
         </div>
-        <div id="stats" class="stats-line hidden"></div>
-        <div id="results" class="cards"></div>
-      </section>
-
-      <section class="manual-check">
-        <div>
-          <h2>Masz konkretną nazwę?</h2>
-          <p class="muted">Sprawdź dostępność `.com` i kolizje marki.</p>
-        </div>
-        <div class="manual-form">
-          <input id="manualName" placeholder="np. Dixeia" autocomplete="off" />
-          <button id="checkBtn" type="button">Sprawdź</button>
-        </div>
+        <div id="searchStatus" class="status hidden"></div>
+        <div id="stats" class="stats-line"></div>
+        <div id="results" class="cards grid-view"></div>
       </section>
     </section>
 
     <section class="view" id="view-dropped" data-view-panel="dropped">
-      <div class="simple-page">
-        <div class="kicker">DROPPED / EXPIRED</div>
-        <h1>Przesiej wygasłe `.com`.</h1>
-        <p class="lead">Wklej listę. Mianem pokaże wyłącznie domeny, które zostały już zwolnione i są wolne do zwykłej rejestracji.</p>
-        <textarea id="droppedInput" rows="12" placeholder="exampleone.com&#10;exampletwo.com&#10;examplethree.com"></textarea>
-        <button class="cta primary-cta" id="droppedBtn" type="button">Sprawdź listę</button>
-        <p class="microcopy">Pending delete, redemption, aukcja i broker są automatycznie odrzucane.</p>
-      </div>
-
-      <section class="results-section dropped-results">
-        <div id="droppedStatus" class="status hidden"></div>
-        <div class="results-head">
-          <div><h2>Dostępne teraz</h2><p class="muted">Tylko domeny potwierdzone jako wolne.</p></div>
-          <div class="layout-toggle" aria-label="Widok wyników"><button type="button" data-layout="grid" title="Grid">▦</button><button type="button" data-layout="list" title="Lista">☰</button></div>
+      <div class="simple-view-head">
+        <div>
+          <div class="kicker">DROPPED / EXPIRED</div>
+          <h1>Tylko faktycznie wolne.</h1>
+          <p>Wklej kandydatów. Mianem odrzuci aktywne, redemption, pending-delete i aftermarket.</p>
         </div>
-        <div id="droppedStats" class="stats-line hidden"></div>
-        <div id="droppedResults" class="cards"></div>
-      </section>
+      </div>
+      <div class="dropped-grid">
+        <div class="drop-input-card">
+          <label for="droppedInput">Domeny lub nazwy — po jednej w linii</label>
+          <textarea id="droppedInput" rows="12" placeholder="example.com\nothername"></textarea>
+          <div class="drop-controls">
+            <select id="droppedLength">
+              <option value="3-9">3–9 liter</option>
+              <option value="5-9" selected>5–9 liter</option>
+              <option value="6-8">6–8 liter</option>
+            </select>
+            <button class="cta primary-cta" id="droppedBtn" type="button">Sprawdź dropped</button>
+          </div>
+        </div>
+        <div>
+          <div class="results-head compact">
+            <div><div class="kicker">AVAILABLE NOW</div><h2>Wolne po weryfikacji</h2></div>
+            <div class="layout-toggle" aria-label="Układ wyników dropped">
+              <button type="button" data-layout="grid" class="active">▦</button>
+              <button type="button" data-layout="list">☰</button>
+            </div>
+          </div>
+          <div id="droppedStatus" class="status hidden"></div>
+          <div id="droppedResults" class="cards grid-view"></div>
+        </div>
+      </div>
     </section>
 
     <section class="view" id="view-saved" data-view-panel="saved">
-      <div class="saved-page">
-        <div class="saved-head">
-          <div>
-            <div class="kicker">YOUR PICKS</div>
-            <h1>Zapisane nazwy.</h1>
+      <div class="results-head">
+        <div><div class="kicker">SAVED</div><h1>Zapisane decyzje.</h1></div>
+        <div class="result-actions">
+          <div class="saved-tabs" id="savedTabs">
+            <button data-decision="all" class="active">Wszystkie</button>
+            <button data-decision="shortlist">Shortlist</button>
+            <button data-decision="radar">Radar</button>
+            <button data-decision="reject">Odrzucone</button>
           </div>
-          <div class="saved-actions">
-            <div class="layout-toggle" aria-label="Widok wyników"><button type="button" data-layout="grid" title="Grid">▦</button><button type="button" data-layout="list" title="Lista">☰</button></div>
-            <a class="button-link" href="/api/export.csv?decision=shortlist">Eksport CSV</a>
+          <div class="layout-toggle" aria-label="Układ zapisanych">
+            <button type="button" data-layout="grid" class="active">▦</button>
+            <button type="button" data-layout="list">☰</button>
           </div>
         </div>
-        <div class="saved-tabs" id="savedTabs">
-          <button data-tab="shortlist" class="active">Shortlista</button>
-          <button data-tab="radar">Radar</button>
-          <button data-tab="reject">Odrzucone</button>
-          <button data-tab="all">Wszystkie</button>
-        </div>
-        <div id="savedResults" class="cards saved-cards"></div>
       </div>
+      <div id="savedResults" class="cards grid-view"></div>
     </section>
   </main>
 
   <dialog id="areasDialog" class="areas-dialog">
-    <form method="dialog" class="dialog-shell">
+    <div class="dialog-shell">
       <div class="dialog-head">
-        <div><div class="kicker">SEARCH AREAS</div><h2>Gdzie szukać?</h2></div>
-        <button class="icon-button" value="cancel" aria-label="Zamknij">×</button>
+        <div><div class="kicker">OBSZARY</div><h2>Gdzie szukać?</h2></div>
+        <button class="icon-button" id="closeAreasBtn" type="button">×</button>
       </div>
-
       <div class="dialog-tools">
-        <input id="nicheFilter" placeholder="Filtruj obszary…" autocomplete="off" />
-        <button id="defaultNichesBtn" type="button">Domyślne</button>
-        <button id="clearNichesBtn" type="button">Wyczyść</button>
+        <input id="nicheFilter" type="search" placeholder="Filtruj obszary…" />
+        <button id="selectAllVisibleBtn" type="button">Zaznacz widoczne</button>
+        <button id="clearAreasBtn" type="button">Wyczyść</button>
       </div>
-
       <div id="nicheGroups" class="niche-groups"></div>
-
-      <details class="custom-area">
-        <summary>+ Dodaj własny obszar</summary>
-        <div class="custom-grid">
-          <label>Takson / rodzina<input id="customTaxon" placeholder="np. Alcedinidae" autocomplete="off" /></label>
-          <label>Nazwa<input id="customLabel" placeholder="np. kingfishers" autocomplete="off" /></label>
-          <label>Grupa<input id="customGroup" placeholder="np. Birds" value="Custom" autocomplete="off" /></label>
-          <button id="addNicheBtn" type="button">Dodaj</button>
+      <details class="custom-niche-box">
+        <summary>Dodaj własny taxon z GBIF</summary>
+        <div class="custom-niche-grid">
+          <input id="customTaxon" placeholder="np. Euphaeidae" />
+          <input id="customLabel" placeholder="Etykieta opcjonalna" />
+          <button id="addCustomNicheBtn" type="button">Dodaj</button>
         </div>
+        <div id="customNicheStatus" class="microcopy"></div>
       </details>
-
       <div class="dialog-footer">
-        <span id="selectedCount">0 wybranych</span>
-        <button class="primary-small" value="confirm">Gotowe</button>
+        <span id="selectedAreasCount">0 wybranych</span>
+        <button class="cta primary-cta" id="applyAreasBtn" type="button">Zastosuj</button>
       </div>
-    </form>
+    </div>
   </dialog>
 
-  <dialog id="languagesDialog" class="areas-dialog languages-dialog">
-    <form method="dialog" class="dialog-shell">
+  <dialog id="languagesDialog" class="areas-dialog language-dialog">
+    <div class="dialog-shell">
       <div class="dialog-head">
-        <div><div class="kicker">LANGUAGE SOURCES</div><h2>Szukaj w językach</h2></div>
-        <button class="icon-button" value="cancel" aria-label="Zamknij">×</button>
+        <div><div class="kicker">JĘZYKI</div><h2>Źródła słów</h2></div>
+        <button class="icon-button" id="closeLanguagesBtn" type="button">×</button>
       </div>
-      <p class="dialog-note">To są źródła realnych słów, nie generator zlepków. Dla polskiego, francuskiego i hiszpańskiego znaki diakrytyczne są transparentnie normalizowane do ASCII dla `.com`. Pinyin używa tylko prawdziwych słów i związków wyrazowych.</p>
-      <div id="languageChips" class="language-chips"></div>
+      <p class="dialog-intro">Realne słowa, nie sztuczne zlepki. PL/FR/ES są normalizowane do ASCII dla `.com`, a oryginalna pisownia zostaje w opisie. Pinyin używa prawdziwych słów i złożeń wraz ze znakami chińskimi.</p>
+      <div id="languageOptions" class="language-options"></div>
       <div class="dialog-footer">
         <span id="selectedLanguagesCount">0 wybranych</span>
-        <div class="dialog-footer-actions"><button id="clearLanguagesBtn" type="button">Wyczyść</button><button class="primary-small" value="confirm">Gotowe</button></div>
+        <button class="cta primary-cta" id="applyLanguagesBtn" type="button">Zastosuj</button>
       </div>
-    </form>
+    </div>
   </dialog>
 
-  <template id="cardTemplate">
-    <article class="candidate-card">
-      <div class="card-top">
-        <div>
-          <div class="name-line"><h3 class="candidate-name"></h3><span class="score"></span></div>
-          <div class="domain-line"><span class="domain"></span><span class="pill domain-pill"></span><span class="pill brand-pill"></span></div>
-        </div>
-        <div class="source"></div>
+  <dialog id="manualDialog" class="manual-dialog">
+    <div class="manual-card">
+      <button class="icon-button manual-close" id="closeManualBtn" type="button">×</button>
+      <div class="kicker">MANUAL CHECK</div>
+      <h2>Sprawdź konkretną nazwę.</h2>
+      <div class="manual-form">
+        <input id="manualName" placeholder="np. lucidota" autocomplete="off" />
+        <button id="runManualBtn" type="button">Sprawdź</button>
       </div>
-      <div class="reason-row"></div>
-      <details class="card-details">
-        <summary>Dlaczego ta nazwa?</summary>
-        <div class="metrics"></div>
-        <div class="screen-links"></div>
-        <div class="hits"></div>
-      </details>
-      <div class="decision-row">
-        <button data-decision="shortlist">★ Shortlista</button>
-        <button data-decision="radar">○ Radar</button>
-        <button data-decision="reject" class="danger">× Odrzuć</button>
-      </div>
-    </article>
-  </template>
+      <div id="manualResult"></div>
+    </div>
+  </dialog>
 
-  <template id="exploreTemplate">
-    <article class="explore-card">
-      <div class="explore-top">
-        <div><div class="group-label"></div><h3 class="explore-name"></h3><span class="taxon-name"></span></div>
-        <div class="yield-score"><b></b><span>free</span></div>
+  <dialog id="exploreDialog" class="explore-dialog">
+    <div class="dialog-shell explore-shell">
+      <div class="dialog-head">
+        <div><div class="kicker">EXPLORE</div><h2>Inne obszary z katalogu</h2></div>
+        <button class="icon-button" id="closeExploreBtn" type="button">×</button>
       </div>
-      <p class="explore-desc"></p>
-      <div class="explore-metrics"></div>
-      <div class="top-names"></div>
-      <div class="explore-actions">
-        <button class="add-area" type="button">+ Obszar</button>
-        <button class="primary-small search-area" type="button">Szukaj tutaj</button>
-      </div>
-    </article>
-  </template>
+      <p class="dialog-intro">Mianem bierze mniej sprawdzone obszary z obecnego katalogu i mierzy ich yield. To nie jest jeszcze autonomiczne odkrywanie nowych grup spoza katalogu.</p>
+      <div id="exploreStatus" class="status hidden"></div>
+      <div id="exploreResults" class="explore-grid"></div>
+    </div>
+  </dialog>
 
   <script src="/static/app.js"></script>
 </body>
