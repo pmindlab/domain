@@ -10,10 +10,10 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .service import NameLabService
-from .workshop import analyze_pair, workshop
+from .workshop_v16 import analyze_pair, workshop
 
 ROOT = Path(__file__).resolve().parent
-app = FastAPI(title="Mianem", version="1.5.0")
+app = FastAPI(title="Mianem", version="1.6.0")
 app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 service = NameLabService()
 
@@ -67,6 +67,7 @@ class DecisionRequest(BaseModel):
 class WorkshopRequest(BaseModel):
     root: str
     niche: str = ""
+    context: str = "neutral"
     limit: int = 8
 
 
@@ -75,7 +76,20 @@ class WorkshopCheckRequest(BaseModel):
     partner: str
     position: str = "before"
     niche: str = ""
+    context: str = "neutral"
     brand_check: bool = True
+
+
+class WorkshopAvailabilityItem(BaseModel):
+    partner: str
+    position: str = "before"
+
+
+class WorkshopAvailabilityRequest(BaseModel):
+    root: str
+    niche: str = ""
+    context: str = "neutral"
+    items: list[WorkshopAvailabilityItem] = Field(default_factory=list)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -89,11 +103,12 @@ async def health():
     return {
         "ok": True,
         "app": "Mianem",
-        "version": "1.5.0",
+        "version": "1.6.0",
         "niche_count": len(niches),
         "custom_niche_count": sum(1 for n in niches if n.get("custom")),
         "language_count": len(service.list_languages()),
         "workshop": True,
+        "semantic_workshop": True,
     }
 
 
@@ -190,16 +205,40 @@ async def check(req: CheckRequest):
 @app.post("/api/workshop")
 async def naming_workshop(req: WorkshopRequest):
     try:
-        return workshop(req.root, req.niche, max(4, min(req.limit, 12)))
+        return workshop(req.root, req.niche, max(4, min(req.limit, 12)), req.context)
     except ValueError as exc:
         raise HTTPException(400, str(exc))
+
+
+@app.post("/api/workshop/availability")
+async def workshop_availability(req: WorkshopAvailabilityRequest):
+    rows = []
+    for item in req.items[:20]:
+        if item.position not in {"before", "after"}:
+            continue
+        analysis = analyze_pair(req.root, item.partner, item.position, req.niche, req.context)
+        if analysis.get("ok"):
+            rows.append((item, analysis))
+    domains = [analysis["domain"] for _, analysis in rows]
+    checked = await service.domain.check_many(domains) if domains else {}
+    return {
+        "items": [
+            {
+                "partner": item.partner,
+                "position": item.position,
+                "domain": analysis["domain"],
+                "domain_status": checked.get(analysis["domain"].lower()).status if checked.get(analysis["domain"].lower()) else "unknown",
+            }
+            for item, analysis in rows
+        ]
+    }
 
 
 @app.post("/api/workshop/check")
 async def workshop_check(req: WorkshopCheckRequest):
     if req.position not in {"before", "after"}:
         raise HTTPException(400, "position must be before or after")
-    analysis = analyze_pair(req.root, req.partner, req.position, req.niche)
+    analysis = analyze_pair(req.root, req.partner, req.position, req.niche, req.context)
     if not analysis.get("ok"):
         return {**analysis, "domain_status": "blocked", "brand_status": "blocked"}
     domain = analysis["domain"]
