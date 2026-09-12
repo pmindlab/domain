@@ -5,6 +5,8 @@ import os
 import socket
 import sys
 import threading
+import time
+import traceback
 import urllib.request
 import webbrowser
 from pathlib import Path
@@ -34,6 +36,17 @@ def default_state_dir() -> Path:
     if local_app_data:
         return Path(local_app_data) / "PMindLab" / APP_NAME
     return Path.home() / ".mianem"
+
+
+def write_startup_error(exc: Exception, details: str = "") -> Path | None:
+    try:
+        path = default_state_dir() / "startup-error.txt"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        text = f"{type(exc).__name__}: {exc}\n\n{details or traceback.format_exc()}"
+        path.write_text(text, encoding="utf-8")
+        return path
+    except Exception:
+        return None
 
 
 def load_env_file(path: Path) -> None:
@@ -96,12 +109,66 @@ def choose_port() -> int:
     raise RuntimeError("Nie znaleziono wolnego lokalnego portu 8787–8799.")
 
 
+def make_server(app, port: int):
+    import uvicorn
+
+    return uvicorn.Server(
+        uvicorn.Config(
+            app,
+            host=HOST,
+            port=port,
+            loop="asyncio",
+            http="h11",
+            ws="none",
+            log_config=None,
+            access_log=False,
+        )
+    )
+
+
 def smoke_test() -> int:
     configure_runtime()
     from app.main import service
     if not service.list_niches() or not service.list_languages():
         raise RuntimeError("Portable smoke test: nie załadowano danych startowych.")
     return 0
+
+
+def server_smoke_test() -> int:
+    configure_runtime()
+    port = choose_port()
+    from app.main import app
+
+    server = make_server(app, port)
+    server_errors: list[tuple[Exception, str]] = []
+
+    def serve() -> None:
+        try:
+            server.run()
+        except Exception as exc:
+            server_errors.append((exc, traceback.format_exc()))
+
+    server_thread = threading.Thread(target=serve, name="mianem-server-smoke", daemon=True)
+    server_thread.start()
+    deadline = time.time() + 12
+    try:
+        while time.time() < deadline:
+            try:
+                with urllib.request.urlopen(f"{app_url(port)}/api/health", timeout=0.4) as response:
+                    payload = json.loads(response.read().decode("utf-8"))
+                if payload.get("ok") is True and payload.get("app") == APP_NAME:
+                    return 0
+            except Exception:
+                if not server_thread.is_alive():
+                    break
+                time.sleep(0.15)
+        if server_errors:
+            exc, tb = server_errors[0]
+            raise RuntimeError(f"Frozen server failed: {type(exc).__name__}: {exc}\n{tb}") from exc
+        raise RuntimeError("Portable server smoke test: lokalny serwer nie osiągnął /api/health.")
+    finally:
+        server.should_exit = True
+        server_thread.join(timeout=5)
 
 
 def run_gui() -> int:
@@ -116,10 +183,17 @@ def run_gui() -> int:
     from app.main import app
     import tkinter as tk
     from tkinter import messagebox, ttk
-    import uvicorn
 
-    server = uvicorn.Server(uvicorn.Config(app, host=HOST, port=port, loop="asyncio", http="h11", ws="none", log_level="warning", access_log=False))
-    server_thread = threading.Thread(target=server.run, name="mianem-server", daemon=True)
+    server = make_server(app, port)
+    server_errors: list[tuple[Exception, str]] = []
+
+    def serve() -> None:
+        try:
+            server.run()
+        except Exception as exc:
+            server_errors.append((exc, traceback.format_exc()))
+
+    server_thread = threading.Thread(target=serve, name="mianem-server", daemon=True)
 
     root = tk.Tk()
     root.title(f"Mianem {__version__}")
@@ -156,7 +230,14 @@ def run_gui() -> int:
             return
         if not server_thread.is_alive():
             status.set("Nie udało się uruchomić Mianem.")
-            messagebox.showerror(APP_NAME, "Nie udało się uruchomić lokalnego serwera Mianem.")
+            if server_errors:
+                exc, tb = server_errors[0]
+                log_path = write_startup_error(exc, tb)
+                detail = f"{type(exc).__name__}: {exc}"
+            else:
+                log_path = None
+                detail = "Lokalny serwer zakończył pracę podczas startu."
+            messagebox.showerror(APP_NAME, f"Nie udało się uruchomić lokalnego serwera Mianem.\n\n{detail}\n\nLog: {log_path or 'niedostępny'}")
             return
         root.after(120, poll_startup)
 
@@ -188,18 +269,27 @@ def run_gui() -> int:
 
 def main() -> int:
     smoke = "--smoke-test" in sys.argv
+    server_smoke = "--server-smoke-test" in sys.argv
     try:
-        return smoke_test() if smoke else run_gui()
-    except Exception:
-        return 1 if smoke else raise_for_gui()
+        if smoke:
+            return smoke_test()
+        if server_smoke:
+            return server_smoke_test()
+        return run_gui()
+    except Exception as exc:
+        if smoke or server_smoke:
+            write_startup_error(exc)
+            return 1
+        return raise_for_gui(exc)
 
 
-def raise_for_gui() -> int:
+def raise_for_gui(exc: Exception) -> int:
     import tkinter as tk
     from tkinter import messagebox
+    log_path = write_startup_error(exc)
     root = tk.Tk()
     root.withdraw()
-    messagebox.showerror(APP_NAME, "Mianem nie może się uruchomić. Spróbuj ponownie po ponownym rozpakowaniu pakietu.")
+    messagebox.showerror(APP_NAME, f"Mianem nie może się uruchomić.\n\n{type(exc).__name__}: {exc}\n\nLog: {log_path or 'niedostępny'}")
     root.destroy()
     return 1
 

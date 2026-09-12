@@ -1,36 +1,37 @@
 # Current Task
 
-TASK_ID: mianem-windows-portable-v1-2026-09-12
+TASK_ID: mianem-windows-portable-startup-remediation-2026-09-12
 
-Status: implementation on build branch; pending Linux CI, Windows package build, packaged-executable smoke test and Human Owner handoff.
+Status: root cause confirmed; corrected single-executable build pending final Windows CI and Human Owner retest.
 
 ## Trigger
-Human Owner requested a downloadable build that can be started on another Windows computer without installing Python, FastAPI or project dependencies.
+The first Windows portable build passed CI and a narrow packaged `--smoke-test`, but on a second Windows computer the real launch failed and the launcher showed only the generic message `Mianem nie może się uruchomić`. The original QA gate did not exercise Uvicorn startup inside the windowed frozen executable.
 
-## Scope
-- Build a self-contained Windows 10/11 x64 `Mianem.exe` with PyInstaller.
-- Keep the product local: bind only to `127.0.0.1` and open the browser automatically.
-- Provide a small Windows launcher window with `Otwórz Mianem` and `Zakończ` so the local server can be stopped cleanly.
-- Store mutable user state outside the executable under `%LOCALAPPDATA%\PMindLab\Mianem`.
-- Bundle only canonical static/template/default-data files; do not bundle local SQLite state, custom niches, `.env`, API keys or other secrets.
-- Support an optional `.env` placed next to `Mianem.exe` for the existing optional GitHub/Brave keys.
-- If another Mianem instance is already running locally, open that instance instead of failing on port 8787.
-- Fall back through local ports 8787–8799 if the preferred port is occupied by another process.
+## Confirmed root cause
+The strengthened packaged-server test reproduced the failure on `windows-latest` and exposed the traceback:
 
-## Delivery contract
-The downloadable artifact is a ZIP containing:
-- `Mianem.exe`,
-- `README-URUCHOM.txt`,
-- `BUILD-INFO.txt`.
+`ValueError: Unable to configure formatter 'default'`
 
-The ZIP must be built on GitHub Actions `windows-latest`, not cross-compiled on Linux. A SHA-256 sidecar must be produced.
+caused by Uvicorn's default logging formatter calling `.isatty()` on a `None` console stream in a PyInstaller `console=False` executable.
+
+This was a launcher/runtime logging bug, not missing Python on the user's computer and not a reason to require installation or administrator access.
+
+## Remediation
+- Keep the simple PyInstaller single-executable portable package.
+- Create Uvicorn with `log_config=None` so a windowed executable does not attempt to configure console-dependent formatters.
+- Add a packaged `--server-smoke-test` that must start the local server and receive `ok=true`, `app=Mianem` from `/api/health` before the ZIP can be produced.
+- Keep the existing frozen data-loading smoke test.
+- Capture server-thread failures and write `%LOCALAPPDATA%\PMindLab\Mianem\startup-error.txt`.
+- Show the real exception in the GUI failure dialog instead of the old generic re-extraction message.
+- Preserve local-only binding to `127.0.0.1` and local mutable state under `%LOCALAPPDATA%\PMindLab\Mianem`.
 
 ## QA gates
-- Existing repository `pytest -q` remains green.
-- `tests/test_windows_portable.py` verifies separation of bundled defaults from mutable local state.
-- PyInstaller build on `windows-latest` succeeds.
-- The packaged `Mianem.exe --smoke-test` successfully imports the frozen application and loads niches/language sources.
-- Build workflow uploads the final ZIP and SHA-256 file.
+- Existing repository CI remains green.
+- Single-file PyInstaller build succeeds on `windows-latest`.
+- `Mianem.exe --smoke-test` succeeds.
+- `Mianem.exe --server-smoke-test` starts the packaged local server and reaches `/api/health` successfully.
+- Final ZIP and SHA-256 are produced only after both packaged smoke tests pass.
+- Human Owner re-tests the new ZIP on the same second Windows computer that exposed the original failure.
 
 ## Product invariants
-Packaging must not change naming, scoring, `.com` availability, brand-screening or Workshop-curation rules. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domain may be presented as available.
+Packaging only. Naming, scoring, `.com` availability, brand-screening and Workshop-curation behavior must not change. No local DB, custom niches, `.env`, API keys or other secrets may be bundled.
