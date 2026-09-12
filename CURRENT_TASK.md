@@ -1,30 +1,43 @@
 # Current Task
 
-TASK_ID: mianem-v1-5-interactive-workshop-2026-09-12
+TASK_ID: mianem-pmindlab-ui-v1-2026-09-12
 
-Status: implementation complete on feature branch; pending PR CI/review/merge.
+Status: IN_PROGRESS
 
-## Implemented
-- Bumped product/API/package to Mianem v1.5.0.
-- Replaced fixed length presets at runtime with Min / Max / optional exact length controls.
-- Added working `app/workshop.py` semantic workshop engine.
-- Added `/api/workshop` for bilingual root context + curated before/after suggestions.
-- Added `/api/workshop/check` for pair analysis → live `.com` → brand screen.
-- Added negative-root screening before network/domain checks.
-- Added a human-in-the-loop workshop modal available from result cards and manual roots.
-- Added custom partner entry: user can test a word before or after the root.
-- Renamed Explore CTA to `Sprawdź inne obszary` so it no longer implies discovery beyond the static catalog.
-- Replaced `app/static/logo.svg` with the exact SVG attachment supplied by the user for v1.5.
-- Updated provider/launcher product identity from NameLab to Mianem.
-- Added workshop tests and frontend JS syntax checks to CI.
-- Updated README and project state.
+## Goal
+Adopt the approved PMindLab Product UI v1 visual standard without changing Mianem search, workshop, domain-check, brand-screening or persistence behaviour.
 
-## Known scope / follow-up
-1. Expand bilingual root dictionary and semantic partner graph substantially.
-2. Add a stronger semantic curator stage for one-word results; current one-word ranking still relies primarily on the existing rule-based scorer.
-3. Add genuine new-area discovery outside the current taxonomy catalog.
-4. Consider persistent workshop history/workbench once interaction patterns are validated.
-5. Migrate legacy `namelab.db` only through an explicit data migration so user history is preserved.
+## Baseline
+- Branch created from `main` at `40346280c8c75a625d2cea249e6381b2023559d2`.
+- Mianem v1.5 functional behaviour is the frozen baseline for this task.
+- `app/static/logo.svg` already matches the exact Owner-supplied PMindLab SVG and must not be recreated or replaced.
 
-## Product invariant
-Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available. Two-word negative constructions are rejected before availability checks.
+## Authorized visual scope
+- align shared light/dark neutral palette with PMindLab Product UI v1;
+- use canonical PMind blue `#3B72B5` and navy `#16325C`;
+- add the canonical dark wordmark variant with identical geometry;
+- move general UI typography from global monospace to local/system sans;
+- retain monospace only for technical data such as domains, source/provider metadata and machine-facing labels;
+- align header proportions and parent-brand/product hierarchy;
+- keep semantic success/warning/error colours distinct and compatible with the PMindLab palette;
+- record `PMINDLAB_PRODUCT_UI_VERSION = 1` in the frontend layer.
+
+## Explicit non-scope
+- no workshop/search/scoring/provider changes;
+- no domain-availability or brand-screening changes;
+- no SQLite/data migration;
+- no external font/CDN dependency;
+- no deployment;
+- no merge without a separate Owner decision.
+
+## Acceptance
+1. Existing Mianem behaviour remains unchanged.
+2. Light background remains the approved warm `#FAFAF7` family.
+3. Light wordmark remains the exact Owner asset.
+4. Dark mode uses the matching canonical dark wordmark.
+5. General UI uses sans; technical identifiers remain mono where useful.
+6. Success/warning/error states remain semantically distinct and are not replaced by brand blue.
+7. Existing tests and frontend syntax checks remain green.
+
+## Exact next step
+Implement the isolated visual layer, run the existing test/syntax suite, inspect the focused diff, then return for Owner visual review before any PR/merge.
