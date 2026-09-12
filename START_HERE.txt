@@ -1,13 +1,19 @@
-Mianem v1.4.1
+Mianem v1.5
 
 WINDOWS
-1. Rozpakuj ZIP.
+1. Otworz lokalny folder repo.
 2. Kliknij run.bat.
-3. Mianem otworzy się lokalnie w przeglądarce.
+3. Mianem otworzy sie pod http://127.0.0.1:8787.
 
-INTERFEJS
-- Wybierz obszary.
-- Wybierz Szybki / Dokładny / Głęboki.
+SZUKANIE
+- Wybierz obszary i/lub jezyki.
+- Wybierz Szybki / Dokladny / Gleboki.
+- Ustaw Min / Max albo wpisz Dokladnie.
 - Kliknij "Szukaj wolnych .com".
 
-Pozostałe parametry researchu są dobierane automatycznie.
+WARSZTAT
+- Przy wyniku kliknij "Otworz Warsztat" albo wpisz wlasny rdzen na dole strony.
+- Zobacz znaczenie EN/PL i sugestie przed/po rdzeniu.
+- Kliknij wybrany czlon: Mianem sprawdzi konstrukcje, live .com i screening marki.
+
+Tylko domeny .com dostepne teraz. Bez aftermarketu.
