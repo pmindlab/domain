@@ -1,0 +1,4 @@
+.setting-row{overflow:visible}
+.setting-row>span:first-child{min-width:0;overflow:visible;padding-block:1px}
+.setting-row small,.setting-label{display:block;line-height:1.4;min-height:1.4em;overflow:visible;padding-top:1px}
+.setting-row strong{display:block;line-height:1.35}
