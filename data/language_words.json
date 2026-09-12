@@ -1,0 +1,44 @@
+{
+  "en": {
+    "label": "English",
+    "description": "Short positive or neutral English words with brand potential.",
+    "words": [
+      {"word":"lucid","meaning":"clear, bright"},{"word":"gleam","meaning":"soft light"},{"word":"brisk","meaning":"lively, quick"},{"word":"vivid","meaning":"bright, intense"},{"word":"lumen","meaning":"light"},{"word":"mirth","meaning":"cheerfulness"},{"word":"rover","meaning":"wanderer"},{"word":"quill","meaning":"feather / writing tool"},{"word":"ripple","meaning":"small wave"},{"word":"mosaic","meaning":"pattern of pieces"},{"word":"prism","meaning":"optical prism"},{"word":"orbit","meaning":"path around a body"},{"word":"ember","meaning":"glowing coal"},{"word":"bloom","meaning":"flowering"},{"word":"drift","meaning":"gentle movement"},{"word":"glint","meaning":"brief flash of light"},{"word":"flint","meaning":"hard stone"},{"word":"coral","meaning":"marine organism"},{"word":"azure","meaning":"bright blue"},{"word":"sprig","meaning":"small plant shoot"}
+    ]
+  },
+  "pl": {
+    "label": "Polski",
+    "description": "Polskie słowa; domena jest normalizowana do ASCII.",
+    "words": [
+      {"word":"światło","meaning":"light"},{"word":"iskra","meaning":"spark"},{"word":"blask","meaning":"glow"},{"word":"fala","meaning":"wave"},{"word":"lot","meaning":"flight"},{"word":"szlak","meaning":"trail"},{"word":"rytm","meaning":"rhythm"},{"word":"nurt","meaning":"current / trend"},{"word":"brzeg","meaning":"shore"},{"word":"kadr","meaning":"frame"},{"word":"forma","meaning":"form"},{"word":"barwa","meaning":"color"},{"word":"zarys","meaning":"outline"},{"word":"echo","meaning":"echo"},{"word":"splot","meaning":"weave / interlace"},{"word":"widok","meaning":"view"},{"word":"strumień","meaning":"stream"},{"word":"jasny","meaning":"bright"},{"word":"pióro","meaning":"feather"},{"word":"ziarno","meaning":"grain"}
+    ]
+  },
+  "es": {
+    "label": "Español",
+    "description": "Palabras españolas reales; diacríticos se normalizan para .com.",
+    "words": [
+      {"word":"claro","meaning":"clear / bright"},{"word":"brisa","meaning":"breeze"},{"word":"luz","meaning":"light"},{"word":"onda","meaning":"wave"},{"word":"cielo","meaning":"sky"},{"word":"alba","meaning":"dawn"},{"word":"vivo","meaning":"alive / vivid"},{"word":"nube","meaning":"cloud"},{"word":"pluma","meaning":"feather"},{"word":"coral","meaning":"coral"},{"word":"lago","meaning":"lake"},{"word":"astro","meaning":"celestial body"},{"word":"senda","meaning":"path"},{"word":"brillo","meaning":"shine"},{"word":"ritmo","meaning":"rhythm"},{"word":"forma","meaning":"form"},{"word":"prisma","meaning":"prism"},{"word":"verde","meaning":"green"},{"word":"roca","meaning":"rock"},{"word":"vela","meaning":"sail / candle"}
+    ]
+  },
+  "fr": {
+    "label": "Français",
+    "description": "Mots français réels; les accents sont normalisés pour .com.",
+    "words": [
+      {"word":"éclat","meaning":"sparkle / brilliance"},{"word":"lueur","meaning":"glow"},{"word":"clair","meaning":"clear / bright"},{"word":"aube","meaning":"dawn"},{"word":"brise","meaning":"breeze"},{"word":"onde","meaning":"wave"},{"word":"plume","meaning":"feather"},{"word":"ciel","meaning":"sky"},{"word":"rive","meaning":"shore"},{"word":"perle","meaning":"pearl"},{"word":"azur","meaning":"azure blue"},{"word":"prisme","meaning":"prism"},{"word":"forme","meaning":"form"},{"word":"trace","meaning":"trace"},{"word":"sillage","meaning":"wake / trail"},{"word":"étoile","meaning":"star"},{"word":"source","meaning":"spring / source"},{"word":"reflet","meaning":"reflection"},{"word":"nuage","meaning":"cloud"},{"word":"élan","meaning":"momentum / spirit"}
+    ]
+  },
+  "la": {
+    "label": "Łacina",
+    "description": "Real Latin words selected for positive or neutral meanings.",
+    "words": [
+      {"word":"lux","meaning":"light"},{"word":"lumen","meaning":"light / opening"},{"word":"clarus","meaning":"bright, clear"},{"word":"viridis","meaning":"green"},{"word":"aura","meaning":"breeze"},{"word":"unda","meaning":"wave"},{"word":"ala","meaning":"wing"},{"word":"avis","meaning":"bird"},{"word":"caelum","meaning":"sky"},{"word":"sidus","meaning":"star / constellation"},{"word":"nova","meaning":"new"},{"word":"forma","meaning":"form"},{"word":"color","meaning":"color"},{"word":"orbis","meaning":"circle / world"},{"word":"lapis","meaning":"stone"},{"word":"mare","meaning":"sea"},{"word":"flos","meaning":"flower"},{"word":"silva","meaning":"forest"},{"word":"linea","meaning":"line"},{"word":"motus","meaning":"movement"}
+    ]
+  },
+  "zh-pinyin": {
+    "label": "Mandaryński · pinyin",
+    "description": "Prawdziwe chińskie słowa i związki; domena używa Hanyu Pinyin bez tonów.",
+    "words": [
+      {"word":"明月","ascii":"mingyue","meaning":"bright moon"},{"word":"晨光","ascii":"chenguang","meaning":"morning light"},{"word":"星河","ascii":"xinghe","meaning":"river of stars / Milky Way"},{"word":"清风","ascii":"qingfeng","meaning":"clear breeze"},{"word":"微光","ascii":"weiguang","meaning":"faint glow"},{"word":"云海","ascii":"yunhai","meaning":"sea of clouds"},{"word":"青岚","ascii":"qinglan","meaning":"blue-green mountain mist"},{"word":"流光","ascii":"liuguang","meaning":"flowing light"},{"word":"星光","ascii":"xingguang","meaning":"starlight"},{"word":"月光","ascii":"yueguang","meaning":"moonlight"},{"word":"飞羽","ascii":"feiyu","meaning":"flying feather"},{"word":"碧波","ascii":"bibo","meaning":"jade-green waves"},{"word":"远山","ascii":"yuanshan","meaning":"distant mountains"},{"word":"清泉","ascii":"qingquan","meaning":"clear spring"},{"word":"灵光","ascii":"lingguang","meaning":"flash of inspiration / spiritual light"},{"word":"晴空","ascii":"qingkong","meaning":"clear sky"},{"word":"星云","ascii":"xingyun","meaning":"nebula"},{"word":"云光","ascii":"yunguang","meaning":"light in clouds"},{"word":"春风","ascii":"chunfeng","meaning":"spring breeze"},{"word":"青鸟","ascii":"qingniao","meaning":"blue bird"}
+    ]
+  }
+}
