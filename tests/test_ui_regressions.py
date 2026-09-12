@@ -24,3 +24,13 @@ def test_product_ui_v1_authority_is_recorded():
     agents = (ROOT / 'AGENTS.md').read_text(encoding='utf-8')
     assert 'PMINDLAB_PRODUCT_UI_V1.md' in agents
     assert 'RESPONSIVE CONTRACT' in agents
+
+
+def test_workshop_defaults_to_available_domains_only():
+    js = (ROOT / 'app/static/workshop-v16.js').read_text(encoding='utf-8')
+    assert "==='available'" in js
+    assert 'showTakenBest:false' in js
+    assert 'showTakenExtensions:false' in js
+    assert 'Pokaż zajęte' in js
+    assert 'najpierw sens, potem wolne .com' in js
+    assert "i+=20" in js
