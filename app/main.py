@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from .service import NameLabService
 
 ROOT = Path(__file__).resolve().parent
-app = FastAPI(title="NameLab", version="1.4.0")
+app = FastAPI(title="Mianem", version="1.4.1")
 app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 service = NameLabService()
 
@@ -73,8 +73,8 @@ async def health():
     niches = service.list_niches()
     return {
         "ok": True,
-        "app": "NameLab",
-        "version": "1.4.0",
+        "app": "Mianem",
+        "version": "1.4.1",
         "niche_count": len(niches),
         "custom_niche_count": sum(1 for n in niches if n.get("custom")),
         "language_count": len(service.list_languages()),
@@ -199,5 +199,5 @@ async def export_csv(decision: str = Query("all")):
     content = out.getvalue().encode("utf-8-sig")
     return StreamingResponse(
         io.BytesIO(content), media_type="text/csv",
-        headers={"Content-Disposition": f"attachment; filename=namelab-{decision}.csv"},
+        headers={"Content-Disposition": f"attachment; filename=mianem-{decision}.csv"},
     )
