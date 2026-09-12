@@ -43,6 +43,12 @@ def test_mianem_uses_action_colour_separately_from_wordmark_colour():
     assert 'background:var(--pmind-action)' in css
 
 
+def test_workshop_active_selector_uses_action_ink_not_hardcoded_white():
+    css = (ROOT / 'app/static/workshop-v16.css').read_text(encoding='utf-8')
+    assert '.work-mode-selector button.active{background:var(--pmind-action);color:var(--pmind-action-ink)}' in css
+    assert '.work-mode-selector button{border:0;background:transparent;color:var(--muted);padding:10px 12px;border-radius:9px;font-weight:400}' in css
+
+
 def test_dark_logo_is_exact_colour_adaptation_of_light_geometry():
     js = (ROOT / 'app/static/product-ui-v1.js').read_text(encoding='utf-8')
     assert "replaceAll('rgb(59,114,181)','#6A9DD8')" in js
