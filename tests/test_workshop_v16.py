@@ -18,6 +18,14 @@ def test_workshop_has_ranked_best_and_brand_extensions():
     assert ext['studio']['domain'] == 'larkstudio.com'
 
 
+def test_brand_extension_keeps_brand_form_semantics():
+    result = analyze_pair('lark', 'the', 'before', 'birds', 'creative')
+    assert result['ok'] is True
+    assert result['domain'] == 'thelark.com'
+    assert result['semantic_class'] == 'brand-form'
+    assert 'format marki' in result['semantic_alert']
+
+
 def test_abstract_pair_gets_explicit_warning():
     result = analyze_pair('krogia', 'clear', 'before', 'lichens', 'neutral')
     assert result['ok'] is True
