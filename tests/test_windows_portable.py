@@ -6,8 +6,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULE_PATH = ROOT / "packaging" / "windows" / "portable_launcher.py"
-SPEC = importlib.util.spec_from_file_location("mianem_portable_launcher", MODULE_PATH)
+MODULE_PATH = ROOT / "packaging" / "windows" / "launcher_windows.py"
+SPEC = importlib.util.spec_from_file_location("mianem_windows_launcher", MODULE_PATH)
 assert SPEC is not None and SPEC.loader is not None
 portable_launcher = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(portable_launcher)
