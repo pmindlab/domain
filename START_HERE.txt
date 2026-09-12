@@ -1,0 +1,13 @@
+NameLab v1.4
+
+WINDOWS
+1. Rozpakuj ZIP.
+2. Kliknij run.bat.
+3. NameLab otworzy się lokalnie w przeglądarce.
+
+INTERFEJS
+- Wybierz obszary.
+- Wybierz Szybki / Dokładny / Głęboki.
+- Kliknij "Szukaj wolnych .com".
+
+Pozostałe parametry researchu są dobierane automatycznie.
