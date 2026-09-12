@@ -46,7 +46,7 @@ button,input,select,textarea{font-family:var(--sans)}
 
 .primary-cta,.manual-form button,.button-link,.primary-small,.nav-tab.active,.saved-tabs button.active,.layout-toggle button.active,.length-mode-selector button.active,.work-mode-selector button.active,.segmented button.active{background:var(--pmind-action);color:var(--pmind-action-ink);border-color:var(--pmind-action)}
 .primary-cta:hover,.manual-form button:hover,.button-link:hover,.primary-small:hover,.nav-tab.active:hover,.saved-tabs button.active:hover,.layout-toggle button.active:hover,.length-mode-selector button.active:hover,.work-mode-selector button.active:hover,.segmented button.active:hover{background:var(--pmind-action-hover);border-color:var(--pmind-action-hover)}
-.nav-tab,.theme-toggle,.cta,.primary-cta,.manual-form button,.button-link,.primary-small,.saved-tabs button,.layout-toggle button,.length-mode-selector button,.work-mode-selector button,.segmented button,.dialog-tools button,.dialog-footer-actions>button,.custom-pair button{font-weight:400}
+.nav-tab,.theme-toggle,.cta,.primary-cta,.manual-form button,.button-link,.primary-small,.saved-tabs button,.layout-toggle button,.length-mode-selector button,.work-mode-selector button,.segmented button,.dialog-tools button,.dialog-footer-actions>button,.custom-pair button,.niche-chip,.niche-chip.selected,.language-chip,.language-chip b,.group-actions button{font-weight:400}
 
 .status{background:var(--pmind-info-bg);border:1px solid var(--pmind-info-border);border-left:3px solid var(--pmind-info-accent);color:var(--pmind-info-ink)}
 .status.error{background:var(--pmind-danger-bg);border-color:var(--pmind-danger-border);border-left-color:var(--pmind-danger-accent);color:var(--pmind-danger-ink)}
