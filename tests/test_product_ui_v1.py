@@ -10,7 +10,7 @@ def test_canonical_brand_tokens_are_local():
     assert '--pmind-brand-blue-on-dark: #6A9DD8' in css
     assert '--pmind-brand-lab-on-dark: #C3D9F0' in css
     assert '--pmind-action: #3B72B5' in css
-    assert '--pmind-action: #6A9DD8' in css
+    assert '--pmind-action: #C3D9F0' in css
     assert '--pmind-action-ink: #101216' in css
     assert '--pmind-bg: #101216' in css
     assert '--pmind-surface: #171A1F' in css
@@ -25,6 +25,15 @@ def test_mianem_uses_two_ui_font_stacks_and_regular_button_weight():
     assert 'body{font-family:var(--sans)}' in css
     assert '.domain' in css and 'font-family:var(--mono)' in css
     assert 'font-weight:400' in css
+
+
+def test_dark_theme_overrides_legacy_aliases_and_uses_lab_actions():
+    css = (ROOT / 'app/static/product-ui-v1-mianem.css').read_text(encoding='utf-8')
+    assert 'html[data-theme="dark"]{' in css
+    assert '--lab:var(--pmind-action)' in css
+    assert '.segmented button.active' in css
+    assert 'background:var(--pmind-action)' in css
+    assert 'html[data-theme="dark"] .row-action{color:var(--pmind-ink)}' in css
 
 
 def test_mianem_uses_action_colour_separately_from_wordmark_colour():
