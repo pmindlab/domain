@@ -203,9 +203,11 @@ async def workshop_check(req: WorkshopCheckRequest):
     if not analysis.get("ok"):
         return {**analysis, "domain_status": "blocked", "brand_status": "blocked"}
     domain = analysis["domain"]
-    dr = await service.domain.check(domain)
-    result = {**analysis, "domain_status": dr.status, "brand_status": "unchecked"}
-    if dr.status == "available" and req.brand_check:
+    checked = await service.domain.check_many([domain])
+    dr = checked.get(domain.lower())
+    domain_status = dr.status if dr else "unknown"
+    result = {**analysis, "domain_status": domain_status, "brand_status": "unchecked"}
+    if domain_status == "available" and req.brand_check:
         br = await service.brand.screen(analysis["joined"])
         result.update({
             "brand_status": br.status,
