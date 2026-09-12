@@ -1,34 +1,36 @@
 # Current Task
 
-TASK_ID: mianem-v1-7-2-selected-direction-switch-2026-09-12
+TASK_ID: mianem-windows-portable-v1-2026-09-12
 
-Status: implementation on fix branch; pending CI/review/Human Owner QA.
+Status: implementation on build branch; pending Linux CI, Windows package build, packaged-executable smoke test and Human Owner handoff.
 
 ## Trigger
-Human Owner QA of Mianem v1.7.1 confirmed that:
-- the deeper Workshop pool now reaches the intended 6–8 strong available `.com` directions for `Lark` / `software` after a clean backend restart;
-- the Workshop now has one visible vertical scroll surface;
-- the selected-construction panel correctly shows whole-name EN/PL meaning, recommendation tier, semantic class and tone.
+Human Owner requested a downloadable build that can be started on another Windows computer without installing Python, FastAPI or project dependencies.
 
-The remaining interaction gap is direction control after selecting a member. Example: after choosing `Lark Echo`, the visible `przed rdzeniem` / `po rdzeniu` buttons still belong only to the separate custom-member field, so the user cannot clearly switch the selected member between `Echo Lark` and `Lark Echo` from the selected-construction panel.
+## Scope
+- Build a self-contained Windows 10/11 x64 `Mianem.exe` with PyInstaller.
+- Keep the product local: bind only to `127.0.0.1` and open the browser automatically.
+- Provide a small Windows launcher window with `Otwórz Mianem` and `Zakończ` so the local server can be stopped cleanly.
+- Store mutable user state outside the executable under `%LOCALAPPDATA%\PMindLab\Mianem`.
+- Bundle only canonical static/template/default-data files; do not bundle local SQLite state, custom niches, `.env`, API keys or other secrets.
+- Support an optional `.env` placed next to `Mianem.exe` for the existing optional GitHub/Brave keys.
+- If another Mianem instance is already running locally, open that instance instead of failing on port 8787.
+- Fall back through local ports 8787–8799 if the preferred port is occupied by another process.
 
-## Fix
-- Add an explicit `UKŁAD NAZWY` control inside the selected-construction panel.
-- For semantic/custom members, expose both `before` and `after` arrangements and re-run the existing analysis/live check when the user changes arrangement.
-- Each arrangement is evaluated independently; reversing a member does not inherit the original recommendation and may receive a weaker/abstract warning.
-- Preserve fixed grammar for curated construction families such as `By Lark`, `With Lark`, `Get Lark`, possessives and canonical descriptors: do not automatically create reversed nonsense such as `Lark By`.
-- Keep the custom-member `przed rdzeniem` / `po rdzeniu` controls for entering a new manual member; the new switch applies specifically to the currently selected construction.
-- Add PMindLab-token styling, regression coverage and JavaScript syntax coverage.
+## Delivery contract
+The downloadable artifact is a ZIP containing:
+- `Mianem.exe`,
+- `README-URUCHOM.txt`,
+- `BUILD-INFO.txt`.
 
-## QA required before merge
-- `pytest -q`
-- JavaScript syntax checks including `app/static/workshop-v172.js`
-- full PR CI
-- Human Owner local check:
-  - select a semantic member such as `Light` / `Echo` and confirm the selected-construction panel lets the user switch both arrangements;
-  - confirm the meaning/recommendation is recalculated after switching;
-  - select a fixed grammatical construction such as `By Lark` and confirm the UI explains the fixed natural order instead of offering `Lark By`;
-  - confirm the v1.7.1 6–8 shortlist and single-scroll fixes remain intact.
+The ZIP must be built on GitHub Actions `windows-latest`, not cross-compiled on Linux. A SHA-256 sidecar must be produced.
 
-## Product invariant
-Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available. Recommendation quality remains independent from `.com` availability. Direction switching is a user-controlled linguistic evaluation, not an instruction to recommend both orders equally.
+## QA gates
+- Existing repository `pytest -q` remains green.
+- `tests/test_windows_portable.py` verifies separation of bundled defaults from mutable local state.
+- PyInstaller build on `windows-latest` succeeds.
+- The packaged `Mianem.exe --smoke-test` successfully imports the frozen application and loads niches/language sources.
+- Build workflow uploads the final ZIP and SHA-256 file.
+
+## Product invariants
+Packaging must not change naming, scoring, `.com` availability, brand-screening or Workshop-curation rules. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domain may be presented as available.
