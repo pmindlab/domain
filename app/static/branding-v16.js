@@ -1,0 +1,1 @@
+document.title='Mianem v1.6 — PMindLab';const _v16ver=document.querySelector('.app-id span');if(_v16ver)_v16ver.textContent='v1.6';
