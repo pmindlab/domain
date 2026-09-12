@@ -85,7 +85,7 @@ class BrandScreenProvider:
             return [], False
 
     async def screen(self, name: str) -> BrandResult:
-        headers = {"User-Agent": "NameLab/1.4 brand screening"}
+        headers = {"User-Agent": "Mianem/1.5 brand screening"}
         async with httpx.AsyncClient(timeout=self.timeout, headers=headers, follow_redirects=True) as client:
             gh_hits, gh_strong = await self._github(client, name)
             web_hits, web_strong = await self._brave(client, name)

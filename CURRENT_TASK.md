@@ -1,23 +1,30 @@
 # Current Task
 
-TASK_ID: mianem-product-rename-and-workshop-direction-2026-09-12
+TASK_ID: mianem-v1-5-interactive-workshop-2026-09-12
 
-Status: rename implemented on feature branch; pending CI and merge.
+Status: implementation complete on feature branch; pending PR CI/review/merge.
 
-## Completed in this task
-- Renamed visible product identity from NameLab to Mianem.
-- Bumped product version to v1.4.1.
-- Updated FastAPI metadata, health response and CSV export filename.
-- Preserved legacy local data identifiers so existing SQLite history is not lost.
-- Captured the next product direction: interactive naming workshop rather than bulk-result generator.
+## Implemented
+- Bumped product/API/package to Mianem v1.5.0.
+- Replaced fixed length presets at runtime with Min / Max / optional exact length controls.
+- Added working `app/workshop.py` semantic workshop engine.
+- Added `/api/workshop` for bilingual root context + curated before/after suggestions.
+- Added `/api/workshop/check` for pair analysis → live `.com` → brand screen.
+- Added negative-root screening before network/domain checks.
+- Added a human-in-the-loop workshop modal available from result cards and manual roots.
+- Added custom partner entry: user can test a word before or after the root.
+- Renamed Explore CTA to `Sprawdź inne obszary` so it no longer implies discovery beyond the static catalog.
+- Replaced `app/static/logo.svg` with the exact SVG attachment supplied by the user for v1.5.
+- Updated provider/launcher product identity from NameLab to Mianem.
+- Added workshop tests and frontend JS syntax checks to CI.
+- Updated README and project state.
 
-## Next product work — v1.5
-1. Replace length presets with clear min/max plus optional exact/custom length.
-2. Improve one-word quality with semantic curation beyond the current rule-based scorer.
-3. Add a root-word workshop: choose a result such as `lark`, see EN/PL meaning and associations, then explore compatible words before and after it.
-4. Add two-word `.com` mode using semantic compatibility, natural-language quality, phone test and negative-meaning screening before domain checks.
-5. Make discovery genuinely expand beyond the existing static niche catalog.
-6. Keep human choice central: suggest a small set of directions rather than returning hundreds of combinations.
+## Known scope / follow-up
+1. Expand bilingual root dictionary and semantic partner graph substantially.
+2. Add a stronger semantic curator stage for one-word results; current one-word ranking still relies primarily on the existing rule-based scorer.
+3. Add genuine new-area discovery outside the current taxonomy catalog.
+4. Consider persistent workshop history/workbench once interaction patterns are validated.
+5. Migrate legacy `namelab.db` only through an explicit data migration so user history is preserved.
 
 ## Product invariant
-Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available.
+Available `.com` only. No aftermarket, auction, broker, redemption, pending-delete or merely expiring domains may be presented as available. Two-word negative constructions are rejected before availability checks.
