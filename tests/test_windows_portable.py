@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import importlib.util
 import os
 from pathlib import Path
 
-from packaging.windows import portable_launcher
-
 
 ROOT = Path(__file__).resolve().parents[1]
+MODULE_PATH = ROOT / "packaging" / "windows" / "portable_launcher.py"
+SPEC = importlib.util.spec_from_file_location("mianem_portable_launcher", MODULE_PATH)
+assert SPEC is not None and SPEC.loader is not None
+portable_launcher = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(portable_launcher)
 
 
 def test_portable_runtime_uses_bundled_defaults_and_local_mutable_state(tmp_path, monkeypatch):
