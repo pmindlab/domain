@@ -34,7 +34,7 @@ class VerisignRdapProvider:
                 return DomainResult(domain, "unknown", f"RDAP error: {type(exc).__name__}")
 
     async def check_many(self, domains: list[str]) -> dict[str, DomainResult]:
-        headers = {"User-Agent": "NameLab/1.4 domain availability research"}
+        headers = {"User-Agent": "Mianem/1.5 domain availability research"}
         async with httpx.AsyncClient(timeout=self.timeout, headers=headers, follow_redirects=True) as client:
             results = await asyncio.gather(*(self.check_one(client, d) for d in domains))
         return {r.domain.lower(): r for r in results}
